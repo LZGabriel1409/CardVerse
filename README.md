@@ -6,7 +6,7 @@ O **CardVerse** é um projeto web de jogo de cartas colecionáveis em desenvolvi
 
 O visual segue uma identidade de jogo de fantasia, com tons escuros, roxo e dourado, elementos inspirados em cartas e interações sutis.
 
-> **Status:** em desenvolvimento — etapas 1 e 2 concluídas. A próxima etapa será a interface e a lógica da coleção de cartas.
+> **Status:** em desenvolvimento — etapas 1, 2 e 3 concluídas. A próxima etapa será a loja e a compra de pacotes.
 
 ## ✨ Funcionalidades disponíveis
 
@@ -15,10 +15,13 @@ O visual segue uma identidade de jogo de fantasia, com tons escuros, roxo e dour
 - Dashboard com saudação personalizada.
 - Saldo de moedas virtuais (500 moedas iniciais por jogador).
 - Indicadores de cartas diferentes e total de cartas na coleção, consultados no banco.
+- Página da coleção com nome, imagem, raridade, descrição e quantidade de cada carta.
+- Filtro por raridade, busca por nome e visualização detalhada em modal.
+- Mensagens específicas para coleção vazia e para filtros sem resultados.
 - Validação dos formulários, tokens CSRF e consultas preparadas com PDO.
 - Interface responsiva com Bootstrap e Bootstrap Icons.
 
-**Atenção:** as seções de coleção, pacotes e trocas exibidas no dashboard são prévias visuais; suas funcionalidades ainda não foram implementadas.
+**Atenção:** as seções de pacotes e trocas exibidas no dashboard são prévias visuais; suas funcionalidades ainda não foram implementadas.
 
 ## 🛠️ Tecnologias
 
@@ -40,14 +43,17 @@ CardVerse/
 │   ├── cadastrar.php        # Processamento do cadastro
 │   └── entrar.php           # Processamento do login
 ├── assets/
-│   └── css/
-│       └── style.css        # Estilos do CardVerse
+│   ├── css/
+│   │   └── style.css        # Estilos do CardVerse
+│   └── img/
+│       └── cartas/          # Imagens das cartas (adicionadas depois)
 ├── config/
 │   ├── auth.php             # Sessões, autenticação e CSRF
 │   └── conexao.php          # Conexão PDO com MySQL
 ├── database/
 │   └── cardverse.sql        # Estrutura e dados iniciais
 ├── cadastro.php             # Tela de cadastro
+├── colecao.php              # Coleção de cartas do jogador
 ├── dashboard.php            # Painel do jogador
 ├── login.php                # Tela de login
 ├── logout.php               # Encerramento da sessão
@@ -55,7 +61,7 @@ CardVerse/
 └── README.md
 ```
 
-> A estrutura acima representa os arquivos desenvolvidos nas etapas iniciais. A pasta `database` e o teste de conexão vêm da etapa 1; mantenha-os no projeto ao aplicar atualizações visuais.
+> A estrutura acima representa os arquivos atuais do projeto. A pasta `database` e o teste de conexão vêm da etapa 1; mantenha-os no projeto ao aplicar atualizações visuais.
 
 ## 🚀 Como executar localmente
 
@@ -94,12 +100,14 @@ O banco **`cardverse`** possui as seguintes tabelas planejadas para o jogo:
 
 A existência dessas tabelas **não significa** que todas as funcionalidades já estejam disponíveis na interface.
 
+> **Imagens das cartas:** coloque os arquivos em `assets/img/cartas/` usando o mesmo nome registrado na coluna `imagem` da tabela `cartas`. Enquanto o arquivo não existir, a página da coleção exibe um espaço reservado com o aviso "Arte em breve".
+
 ## 🧭 Próximas etapas
 
 - [x] **Etapa 1:** banco de dados e conexão com PDO.
 - [x] **Etapa 2:** cadastro, login, logout e dashboard.
 - [x] **Identidade visual inicial:** layout inspirado em jogos de cartas e logo feita com HTML/CSS/ícones.
-- [ ] **Etapa 3:** coleção de cartas — listagem, raridade e quantidades.
+- [x] **Etapa 3:** coleção de cartas — listagem, raridade e quantidades.
 - [ ] Loja e compra de pacotes com moedas.
 - [ ] Abertura de pacotes e sorteio de cartas.
 - [ ] Sistema de trocas entre jogadores.

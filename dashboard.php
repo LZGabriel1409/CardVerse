@@ -96,11 +96,11 @@ $colecao = $stmt->fetch();
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-card is-locked">
+                <a class="feature-card" href="colecao.php">
                     <i class="bi bi-grid-3x3-gap"></i>
                     <h3 class="h5 mt-3">Minha coleção</h3>
-                    <p class="muted mb-0">Organize suas cartas e descubra novas raridades. Em breve!</p>
-                </div>
+                    <p class="muted mb-0">Organize suas cartas, filtre por raridade e veja os detalhes.</p>
+                </a>
             </div>
             <div class="col-md-4">
                 <div class="feature-card is-locked">

@@ -1,4 +1,3 @@
-
 <?php
 $host = "localhost";
 $banco = "cardverse";
@@ -21,4 +20,3 @@ try {
     error_log($e->getMessage());
     die("Erro ao conectar com o banco de dados.");
 }
-?>

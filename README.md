@@ -18,9 +18,10 @@ O visual segue uma identidade de jogo de fantasia, com tons escuros, roxo e dour
 - Página da coleção com nome, imagem, raridade, descrição e quantidade de cada carta.
 - Filtro por raridade, busca por nome e visualização detalhada em modal.
 - Mensagens específicas para coleção vazia e para filtros sem resultados.
-- Loja com pacotes, descrição, preço e quantidade de cartas.
+- Loja com três pacotes, descrição, preço, selo, quantidade de cartas e regras de raridade.
 - Compra de pacotes com validação de saldo e registro na tabela `compras`.
 - Proteção contra duplo envio da compra com token de uso único e transação no banco.
+- Código organizado em classes de domínio (`Usuario`, `Carta` e `Pacote`) com autoload próprio.
 - Validação dos formulários, tokens CSRF e consultas preparadas com PDO.
 - Interface responsiva com Bootstrap e Bootstrap Icons.
 
@@ -51,6 +52,12 @@ CardVerse/
 │   │   └── style.css        # Estilos do CardVerse
 │   └── img/
 │       └── cartas/          # Imagens das cartas (adicionadas depois)
+├── classes/
+│   ├── autoload.php         # Carregamento automático das classes
+│   ├── Carta.php            # Catálogo e coleção do jogador
+│   ├── LojaException.php    # Erros de domínio da loja
+│   ├── Pacote.php           # Pacotes e compra transacional
+│   └── Usuario.php          # Contas, cadastro e autenticação
 ├── config/
 │   ├── auth.php             # Sessões, autenticação e CSRF
 │   └── conexao.php          # Conexão PDO com MySQL
@@ -67,6 +74,19 @@ CardVerse/
 ```
 
 > A estrutura acima representa os arquivos atuais do projeto. A pasta `database` e o teste de conexão vêm da etapa 1; mantenha-os no projeto ao aplicar atualizações visuais.
+
+## 🧱 Organização em classes
+
+As regras de negócio ficam em `classes/`, carregadas por `classes/autoload.php`:
+
+| Classe | Responsabilidade |
+| --- | --- |
+| `Usuario` | Consulta, cadastro, autenticação e validação de e-mail |
+| `Carta` | Catálogo, coleção, filtros, resumo e adição de cartas |
+| `Pacote` | Pacotes ativos, cartas do pacote e compra transacional |
+| `LojaException` | Erros de domínio da compra (saldo, pacote e duplicidade) |
+
+As páginas e ações validam a requisição e chamam essas classes; as consultas SQL e as regras de negócio ficam concentradas nessa camada.
 
 ## 🚀 Como executar localmente
 
@@ -97,7 +117,7 @@ O banco **`cardverse`** possui as seguintes tabelas planejadas para o jogo:
 | `usuarios` | Contas e saldo de moedas |
 | `cartas` | Catálogo de cartas |
 | `colecao` | Cartas pertencentes aos jogadores |
-| `pacotes` | Tipos de pacotes, descrição, preço e quantidade de cartas |
+| `pacotes` | Pacotes, descrição, selo, preço, quantidade e regras de raridade |
 | `pacote_cartas` | Relação entre pacotes e cartas |
 | `compras` | Registro das compras de pacotes pelos jogadores |
 | `aberturas` | Registro de aberturas |
@@ -105,6 +125,16 @@ O banco **`cardverse`** possui as seguintes tabelas planejadas para o jogo:
 | `resgates_diarios` | Controle de recompensas diárias |
 
 A existência dessas tabelas **não significa** que todas as funcionalidades já estejam disponíveis na interface.
+
+### Pacotes da loja
+
+| Pacote | Preço | Cartas | Regras |
+| --- | ---: | ---: | --- |
+| Pacote Mistico | 100 | 5 | Comuns, raras e épicas |
+| Pacote Arcano | 250 | 5 | Raras/épicas + 10% de chance de lendária |
+| Pacote Celestial | 500 | 5 | Épica garantida + 25% de chance de lendária |
+
+As colunas `raridade_garantida` e `chance_lendaria` já ficam gravadas em `pacotes` para a futura abertura de pacotes. Os vínculos em `pacote_cartas` definem o pool de cartas de cada pacote.
 
 > **Imagens das cartas:** coloque os arquivos em `assets/img/cartas/` usando o mesmo nome registrado na coluna `imagem` da tabela `cartas`. Enquanto o arquivo não existir, a página da coleção exibe um espaço reservado com o aviso "Arte em breve".
 

@@ -36,10 +36,15 @@ CREATE TABLE IF NOT EXISTS pacotes (
  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  nome VARCHAR(100) NOT NULL UNIQUE,
  descricao TEXT NULL,
+ selo VARCHAR(30) NULL,
+ destaque BOOLEAN NOT NULL DEFAULT FALSE,
+ raridade_garantida ENUM('comum','rara','epica','lendaria') NULL,
+ chance_lendaria TINYINT UNSIGNED NOT NULL DEFAULT 0,
  preco INT UNSIGNED NOT NULL,
  quantidade_cartas TINYINT UNSIGNED NOT NULL DEFAULT 5,
  ativo BOOLEAN NOT NULL DEFAULT TRUE,
- CONSTRAINT chk_pacotes_quantidade CHECK (quantidade_cartas > 0)
+ CONSTRAINT chk_pacotes_quantidade CHECK (quantidade_cartas > 0),
+ CONSTRAINT chk_pacotes_chance CHECK (chance_lendaria <= 100)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS pacote_cartas (
@@ -111,9 +116,29 @@ INSERT INTO cartas (nome,descricao,imagem,raridade,ataque,defesa) VALUES
 ('Fenix Celestial','Ave lendaria que renasce das cinzas.','fenix-celestial.png','lendaria',120,100)
 ON DUPLICATE KEY UPDATE nome=VALUES(nome);
 
-INSERT INTO pacotes (nome,descricao,preco,quantidade_cartas,ativo)
-VALUES ('Pacote Mistico','Um pacote com 5 cartas misteriosas do universo CardVerse. Cada abertura pode revelar desde cartas comuns até uma lendária.',100,5,TRUE)
-ON DUPLICATE KEY UPDATE nome=VALUES(nome), descricao=VALUES(descricao);
+INSERT INTO pacotes (nome,descricao,selo,destaque,raridade_garantida,chance_lendaria,preco,quantidade_cartas,ativo) VALUES
+('Pacote Mistico','Um pacote com 5 cartas misteriosas do universo CardVerse. Reúne cartas comuns, raras e épicas para começar ou ampliar a coleção.','Popular',FALSE,NULL,0,100,5,TRUE),
+('Pacote Arcano','Cinco cartas imbuídas de magia arcana, com foco em raras e épicas e uma pequena chance de revelar uma lendária.','Raro+',FALSE,NULL,10,250,5,TRUE),
+('Pacote Celestial','Cinco cartas celestiais com pelo menos uma épica garantida e chance de revelar a lendária Fênix Celestial.','Premium',TRUE,'epica',25,500,5,TRUE)
+ON DUPLICATE KEY UPDATE
+ nome=VALUES(nome),
+ descricao=VALUES(descricao),
+ selo=VALUES(selo),
+ destaque=VALUES(destaque),
+ raridade_garantida=VALUES(raridade_garantida),
+ chance_lendaria=VALUES(chance_lendaria),
+ preco=VALUES(preco),
+ quantidade_cartas=VALUES(quantidade_cartas),
+ ativo=VALUES(ativo);
+
+DELETE pc FROM pacote_cartas pc
+INNER JOIN pacotes p ON p.id = pc.pacote_id
+WHERE p.nome IN ('Pacote Mistico','Pacote Arcano','Pacote Celestial');
 
 INSERT IGNORE INTO pacote_cartas (pacote_id,carta_id)
-SELECT p.id,c.id FROM pacotes p CROSS JOIN cartas c WHERE p.nome='Pacote Mistico';
+SELECT p.id,c.id
+FROM pacotes p
+CROSS JOIN cartas c
+WHERE (p.nome='Pacote Mistico' AND c.raridade IN ('comum','rara','epica'))
+   OR (p.nome='Pacote Arcano' AND c.raridade IN ('rara','epica','lendaria'))
+   OR (p.nome='Pacote Celestial' AND c.raridade IN ('epica','lendaria'));

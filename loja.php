@@ -3,13 +3,14 @@ require_once __DIR__ . '/config/auth.php';
 exigirLogin();
 
 require_once __DIR__ . '/config/conexao.php';
+require_once __DIR__ . '/classes/autoload.php';
 
 $usuarioId = (int)$_SESSION['usuario_id'];
+$usuarios = new Usuario($pdo);
+$pacotesModel = new Pacote($pdo);
 
 // Dados do jogador autenticado
-$stmt = $pdo->prepare('SELECT nome, moedas FROM usuarios WHERE id = ?');
-$stmt->execute([$usuarioId]);
-$usuario = $stmt->fetch();
+$usuario = $usuarios->buscarPorId($usuarioId);
 
 if (!$usuario) {
     header('Location: logout.php');
@@ -19,12 +20,7 @@ if (!$usuario) {
 $saldo = (int)$usuario['moedas'];
 
 // Pacotes disponíveis na loja
-$pacotes = $pdo->query(
-    'SELECT id, nome, descricao, preco, quantidade_cartas
-     FROM pacotes
-     WHERE ativo = 1
-     ORDER BY preco ASC, nome ASC'
-)->fetchAll();
+$pacotes = $pacotesModel->listarAtivos();
 
 // Token de uso único para evitar envio duplicado da compra
 if (empty($_SESSION['compra_token'])) {
@@ -120,11 +116,21 @@ $flash = pegarMensagem();
                     }
                     $saldoSuficiente = $saldo >= $preco;
                     $faltam = max(0, $preco - $saldo);
+                    $selo = trim((string)($pacote['selo'] ?? ''));
+                    $premium = (int)($pacote['destaque'] ?? 0) === 1;
+                    $garantia = (string)($pacote['raridade_garantida'] ?? '');
+                    $garantiaRotulo = isset(Carta::RARIDADES[$garantia])
+                        ? Carta::RARIDADES[$garantia]['rotulo']
+                        : '';
+                    $chanceLendaria = (int)($pacote['chance_lendaria'] ?? 0);
                     ?>
                     <div class="col-md-6 col-xl-4">
-                        <article class="pack-card">
+                        <article class="pack-card<?= $premium ? ' pack-card--premium' : '' ?>">
                             <div class="pack-art" aria-hidden="true">
-                                <i class="bi bi-box2-heart"></i>
+                                <?php if ($selo !== ''): ?>
+                                    <span class="pack-badge"><?= htmlspecialchars($selo) ?></span>
+                                <?php endif; ?>
+                                <i class="bi <?= $premium ? 'bi-gem' : 'bi-box2-heart' ?>"></i>
                             </div>
                             <div class="pack-body">
                                 <div class="d-flex align-items-start justify-content-between gap-2">
@@ -134,9 +140,21 @@ $flash = pegarMensagem();
                                     </span>
                                 </div>
                                 <p class="pack-desc"><?= htmlspecialchars($descricao) ?></p>
-                                <span class="tag align-self-start">
-                                    <i class="bi bi-layers me-1"></i><?= $quantidadeCartas ?> <?= $quantidadeCartas === 1 ? 'carta' : 'cartas' ?>
-                                </span>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="tag">
+                                        <i class="bi bi-layers me-1"></i><?= $quantidadeCartas ?> <?= $quantidadeCartas === 1 ? 'carta' : 'cartas' ?>
+                                    </span>
+                                    <?php if ($garantiaRotulo !== ''): ?>
+                                        <span class="tag tag-guarantee">
+                                            <i class="bi bi-patch-check me-1"></i><?= htmlspecialchars($garantiaRotulo) ?> garantida
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php if ($chanceLendaria > 0): ?>
+                                    <p class="pack-odds mb-0">
+                                        <i class="bi bi-stars me-1"></i>Chance de carta lendária: <?= $chanceLendaria ?>%
+                                    </p>
+                                <?php endif; ?>
 
                                 <?php if ($saldoSuficiente): ?>
                                     <form action="actions/comprar-pacote.php" method="post" class="mt-auto">

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/auth.php';
 require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../classes/autoload.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../cadastro.php');
@@ -22,11 +23,20 @@ if (strlen($senha) < 8 || $senha !== $confirmacao) {
     header('Location: ../cadastro.php'); exit;
 }
 
+$usuarios = new Usuario($pdo);
+
 try {
-    $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, moedas, tipo, criado_em) VALUES (?, ?, ?, 500, 'usuario', NOW())");
-    $stmt->execute([$nome, $email, password_hash($senha, PASSWORD_DEFAULT)]);
+    if ($usuarios->emailExiste($email)) {
+        mensagem('danger', 'Este e-mail já está cadastrado.');
+        header('Location: ../cadastro.php'); exit;
+    }
+
+    $usuarios->criar($nome, $email, $senha);
     mensagem('success', 'Conta criada! Entre com seu e-mail e senha.');
     header('Location: ../login.php'); exit;
+} catch (InvalidArgumentException $e) {
+    mensagem('danger', $e->getMessage());
+    header('Location: ../cadastro.php'); exit;
 } catch (PDOException $e) {
     if ($e->getCode() === '23000') {
         mensagem('danger', 'Este e-mail já está cadastrado.');

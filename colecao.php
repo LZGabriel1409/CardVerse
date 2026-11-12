@@ -3,13 +3,14 @@ require_once __DIR__ . '/config/auth.php';
 exigirLogin();
 
 require_once __DIR__ . '/config/conexao.php';
+require_once __DIR__ . '/classes/autoload.php';
 
 $usuarioId = (int)$_SESSION['usuario_id'];
+$usuarios = new Usuario($pdo);
+$cartasModel = new Carta($pdo);
 
 // Dados do jogador autenticado
-$stmt = $pdo->prepare('SELECT nome, moedas FROM usuarios WHERE id = ?');
-$stmt->execute([$usuarioId]);
-$usuario = $stmt->fetch();
+$usuario = $usuarios->buscarPorId($usuarioId);
 
 if (!$usuario) {
     header('Location: logout.php');
@@ -17,12 +18,7 @@ if (!$usuario) {
 }
 
 // Raridades disponíveis no jogo
-$raridades = [
-    'comum'    => ['rotulo' => 'Comum',    'classe' => 'rarity-comum',    'icone' => 'bi-circle-fill'],
-    'rara'     => ['rotulo' => 'Rara',     'classe' => 'rarity-rara',     'icone' => 'bi-diamond-fill'],
-    'epica'    => ['rotulo' => 'Épica',    'classe' => 'rarity-epica',    'icone' => 'bi-gem'],
-    'lendaria' => ['rotulo' => 'Lendária', 'classe' => 'rarity-lendaria', 'icone' => 'bi-stars'],
-];
+$raridades = Carta::RARIDADES;
 
 // Filtros vindos da URL
 $busca = trim((string)($_GET['busca'] ?? ''));
@@ -36,38 +32,10 @@ if (!isset($raridades[$raridade])) {
 }
 
 // Totais gerais da coleção (para diferenciar "vazia" de "sem resultados")
-$stmt = $pdo->prepare(
-    'SELECT COUNT(*) AS tipos, COALESCE(SUM(quantidade), 0) AS total
-     FROM colecao WHERE usuario_id = ?'
-);
-$stmt->execute([$usuarioId]);
-$resumo = $stmt->fetch();
+$resumo = $cartasModel->resumoColecao($usuarioId);
 
-// Consulta das cartas com filtros aplicados
-$condicoes = ['co.usuario_id = ?'];
-$parametros = [$usuarioId];
-
-if ($busca !== '') {
-    $condicoes[] = 'ca.nome LIKE ?';
-    $parametros[] = '%' . $busca . '%';
-}
-
-if ($raridade !== '') {
-    $condicoes[] = 'ca.raridade = ?';
-    $parametros[] = $raridade;
-}
-
-$sql = 'SELECT ca.id, ca.nome, ca.descricao, ca.imagem, ca.raridade,
-               ca.ataque, ca.defesa, SUM(co.quantidade) AS quantidade
-        FROM colecao co
-        INNER JOIN cartas ca ON ca.id = co.carta_id
-        WHERE ' . implode(' AND ', $condicoes) . '
-        GROUP BY ca.id
-        ORDER BY FIELD(ca.raridade, \'lendaria\', \'epica\', \'rara\', \'comum\'), ca.nome';
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute($parametros);
-$cartas = $stmt->fetchAll();
+// Cartas com os filtros aplicados
+$cartas = $cartasModel->listarColecao($usuarioId, $busca, $raridade);
 
 $totalFiltrado = 0;
 $raridadesEncontradas = [];

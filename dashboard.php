@@ -3,11 +3,13 @@ require_once __DIR__ . '/config/auth.php';
 exigirLogin();
 
 require_once __DIR__ . '/config/conexao.php';
+require_once __DIR__ . '/classes/autoload.php';
+
+$usuarios = new Usuario($pdo);
+$cartas = new Carta($pdo);
 
 // Dados do jogador autenticado
-$stmt = $pdo->prepare('SELECT nome, moedas FROM usuarios WHERE id = ?');
-$stmt->execute([$_SESSION['usuario_id']]);
-$usuario = $stmt->fetch();
+$usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
 
 if (!$usuario) {
     header('Location: logout.php');
@@ -15,12 +17,7 @@ if (!$usuario) {
 }
 
 // Estatísticas da coleção
-$stmt = $pdo->prepare(
-    'SELECT COUNT(*) AS tipos, COALESCE(SUM(quantidade), 0) AS total
-     FROM colecao WHERE usuario_id = ?'
-);
-$stmt->execute([$_SESSION['usuario_id']]);
-$colecao = $stmt->fetch();
+$colecao = $cartas->resumoColecao((int)$_SESSION['usuario_id']);
 ?>
 <!doctype html>
 <html lang="pt-BR">

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/auth.php';
 require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../classes/autoload.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../login.php'); exit;
@@ -14,10 +15,9 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $senha === '') {
     header('Location: ../login.php'); exit;
 }
 
-$stmt = $pdo->prepare('SELECT id, nome, senha FROM usuarios WHERE email = ? LIMIT 1');
-$stmt->execute([$email]);
-$usuario = $stmt->fetch();
-if (!$usuario || !password_verify($senha, $usuario['senha'])) {
+$usuarios = new Usuario($pdo);
+$usuario = $usuarios->autenticar($email, $senha);
+if (!$usuario) {
     mensagem('danger', 'E-mail ou senha inválidos.');
     header('Location: ../login.php'); exit;
 }

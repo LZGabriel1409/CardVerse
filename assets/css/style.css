@@ -156,5 +156,43 @@ a:hover { color: var(--gold); }
 .game-modal .modal-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .detail-box { background: #12121c; border: 1px solid #3d3550; border-radius: 10px; padding: 10px 12px; }
+.shop-note {
+    display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px;
+    background: #241f33; border: 1px solid #4b3f68; border-radius: 12px;
+    color: var(--muted); font-size: .9rem;
+}
+.shop-note .bi { color: var(--purple); font-size: 1.15rem; line-height: 1.4; }
+.pack-card {
+    display: flex; flex-direction: column; height: 100%; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    box-shadow: 0 14px 34px #0003;
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.pack-card:hover { transform: translateY(-4px); border-color: #9d7bc8; box-shadow: 0 18px 38px #0005; }
+.pack-art {
+    position: relative; display: grid; place-items: center; height: 150px; overflow: hidden;
+    background: radial-gradient(circle at 50% 45%, #3a2d51 0%, #221c31 62%, #17141f 100%);
+    border-bottom: 1px solid var(--border);
+}
+.pack-art::before {
+    content: ""; position: absolute; width: 150px; height: 150px;
+    border: 1px dashed #a681d540; border-radius: 50%;
+}
+.pack-art .bi {
+    position: relative; z-index: 1; font-size: 3rem; color: var(--gold);
+    filter: drop-shadow(0 6px 14px #0007);
+}
+.pack-body { display: flex; flex: 1 1 auto; flex-direction: column; gap: 12px; padding: 20px; }
+.pack-name { margin: 0; font-size: 1.15rem; font-weight: 850; }
+.pack-price {
+    display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+    padding: 4px 10px; border: 1px solid #77613e; border-radius: 50px;
+    background: #3b3022; color: var(--gold); font-size: .85rem; font-weight: 800;
+}
+.pack-desc { flex: 1 1 auto; margin: 0; color: var(--muted); font-size: .92rem; }
+.btn-magic:disabled, .btn-magic.disabled {
+    background: #3a3348; border-color: #57506a; color: #a9a2b8;
+    opacity: 1; transform: none; box-shadow: none;
+}
 @media (max-width: 991px) { .auth-aside { min-height: 280px; padding: 28px; } .card-stack { display: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }

@@ -89,11 +89,11 @@ $colecao = $stmt->fetch();
         </div>
         <div class="row g-3">
             <div class="col-md-4">
-                <div class="feature-card is-locked">
+                <a class="feature-card" href="loja.php">
                     <i class="bi bi-box2-heart"></i>
                     <h3 class="h5 mt-3">Pacotes misteriosos</h3>
-                    <p class="muted mb-0">Abra pacotes e encontre cartas raras. Em breve!</p>
-                </div>
+                    <p class="muted mb-0">Compre pacotes com suas moedas e amplie a coleção.</p>
+                </a>
             </div>
             <div class="col-md-4">
                 <a class="feature-card" href="colecao.php">

@@ -6,7 +6,7 @@ O **CardVerse** é um projeto web de jogo de cartas colecionáveis em desenvolvi
 
 O visual segue uma identidade de jogo de fantasia, com tons escuros, roxo e dourado, elementos inspirados em cartas e interações sutis.
 
-> **Status:** em desenvolvimento — etapas 1, 2 e 3 concluídas. A próxima etapa será a loja e a compra de pacotes.
+> **Status:** em desenvolvimento — etapas 1, 2 e 3 concluídas, além da loja e compra de pacotes. A próxima etapa será a abertura de pacotes.
 
 ## ✨ Funcionalidades disponíveis
 
@@ -18,10 +18,13 @@ O visual segue uma identidade de jogo de fantasia, com tons escuros, roxo e dour
 - Página da coleção com nome, imagem, raridade, descrição e quantidade de cada carta.
 - Filtro por raridade, busca por nome e visualização detalhada em modal.
 - Mensagens específicas para coleção vazia e para filtros sem resultados.
+- Loja com pacotes, descrição, preço e quantidade de cartas.
+- Compra de pacotes com validação de saldo e registro na tabela `compras`.
+- Proteção contra duplo envio da compra com token de uso único e transação no banco.
 - Validação dos formulários, tokens CSRF e consultas preparadas com PDO.
 - Interface responsiva com Bootstrap e Bootstrap Icons.
 
-**Atenção:** as seções de pacotes e trocas exibidas no dashboard são prévias visuais; suas funcionalidades ainda não foram implementadas.
+**Atenção:** a seção de trocas exibida no dashboard é uma prévia visual; sua funcionalidade ainda não foi implementada.
 
 ## 🛠️ Tecnologias
 
@@ -41,6 +44,7 @@ O visual segue uma identidade de jogo de fantasia, com tons escuros, roxo e dour
 CardVerse/
 ├── actions/
 │   ├── cadastrar.php        # Processamento do cadastro
+│   ├── comprar-pacote.php   # Processamento da compra de pacotes
 │   └── entrar.php           # Processamento do login
 ├── assets/
 │   ├── css/
@@ -57,6 +61,7 @@ CardVerse/
 ├── dashboard.php            # Painel do jogador
 ├── login.php                # Tela de login
 ├── logout.php               # Encerramento da sessão
+├── loja.php                 # Loja de pacotes
 ├── teste-conexao.php        # Teste local de conexão (desenvolvimento)
 └── README.md
 ```
@@ -92,8 +97,9 @@ O banco **`cardverse`** possui as seguintes tabelas planejadas para o jogo:
 | `usuarios` | Contas e saldo de moedas |
 | `cartas` | Catálogo de cartas |
 | `colecao` | Cartas pertencentes aos jogadores |
-| `pacotes` | Tipos de pacotes |
+| `pacotes` | Tipos de pacotes, descrição, preço e quantidade de cartas |
 | `pacote_cartas` | Relação entre pacotes e cartas |
+| `compras` | Registro das compras de pacotes pelos jogadores |
 | `aberturas` | Registro de aberturas |
 | `trocas` | Negociações entre jogadores |
 | `resgates_diarios` | Controle de recompensas diárias |
@@ -108,7 +114,7 @@ A existência dessas tabelas **não significa** que todas as funcionalidades já
 - [x] **Etapa 2:** cadastro, login, logout e dashboard.
 - [x] **Identidade visual inicial:** layout inspirado em jogos de cartas e logo feita com HTML/CSS/ícones.
 - [x] **Etapa 3:** coleção de cartas — listagem, raridade e quantidades.
-- [ ] Loja e compra de pacotes com moedas.
+- [x] Loja e compra de pacotes com moedas.
 - [ ] Abertura de pacotes e sorteio de cartas.
 - [ ] Sistema de trocas entre jogadores.
 - [ ] Recompensas diárias e ranking.
@@ -116,7 +122,7 @@ A existência dessas tabelas **não significa** que todas as funcionalidades já
 
 ## 🔐 Observações de segurança
 
-O projeto utiliza hash de senha, sessões, proteção CSRF e consultas preparadas com PDO nas funcionalidades atuais. Antes de disponibilizá-lo publicamente, será necessário revisar a configuração de produção, o tratamento de erros, as permissões e a segurança geral.
+O projeto utiliza hash de senha, sessões, proteção CSRF e consultas preparadas com PDO nas funcionalidades atuais. As compras usam transações com bloqueio de saldo e token de uso único para evitar cobranças duplicadas. Antes de disponibilizá-lo publicamente, será necessário revisar a configuração de produção, o tratamento de erros, as permissões e a segurança geral.
 
 ## 📌 Sobre o projeto
 

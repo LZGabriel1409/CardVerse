@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS colecao (
 CREATE TABLE IF NOT EXISTS pacotes (
  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  nome VARCHAR(100) NOT NULL UNIQUE,
+ descricao TEXT NULL,
  preco INT UNSIGNED NOT NULL,
  quantidade_cartas TINYINT UNSIGNED NOT NULL DEFAULT 5,
  ativo BOOLEAN NOT NULL DEFAULT TRUE,
@@ -47,6 +48,19 @@ CREATE TABLE IF NOT EXISTS pacote_cartas (
  PRIMARY KEY (pacote_id,carta_id),
  CONSTRAINT fk_pc_pacote FOREIGN KEY (pacote_id) REFERENCES pacotes(id) ON DELETE CASCADE,
  CONSTRAINT fk_pc_carta FOREIGN KEY (carta_id) REFERENCES cartas(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS compras (
+ id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+ usuario_id INT UNSIGNED NOT NULL,
+ pacote_id INT UNSIGNED NOT NULL,
+ valor_pago INT UNSIGNED NOT NULL,
+ token_compra CHAR(64) NOT NULL,
+ data_compra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE KEY uq_compras_token (token_compra),
+ CONSTRAINT fk_compra_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+ CONSTRAINT fk_compra_pacote FOREIGN KEY (pacote_id) REFERENCES pacotes(id) ON DELETE RESTRICT,
+ CONSTRAINT chk_compra_valor CHECK (valor_pago > 0)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS aberturas (
@@ -97,9 +111,9 @@ INSERT INTO cartas (nome,descricao,imagem,raridade,ataque,defesa) VALUES
 ('Fenix Celestial','Ave lendaria que renasce das cinzas.','fenix-celestial.png','lendaria',120,100)
 ON DUPLICATE KEY UPDATE nome=VALUES(nome);
 
-INSERT INTO pacotes (nome,preco,quantidade_cartas,ativo)
-VALUES ('Pacote Mistico',100,5,TRUE)
-ON DUPLICATE KEY UPDATE nome=VALUES(nome);
+INSERT INTO pacotes (nome,descricao,preco,quantidade_cartas,ativo)
+VALUES ('Pacote Mistico','Um pacote com 5 cartas misteriosas do universo CardVerse. Cada abertura pode revelar desde cartas comuns até uma lendária.',100,5,TRUE)
+ON DUPLICATE KEY UPDATE nome=VALUES(nome), descricao=VALUES(descricao);
 
 INSERT IGNORE INTO pacote_cartas (pacote_id,carta_id)
 SELECT p.id,c.id FROM pacotes p CROSS JOIN cartas c WHERE p.nome='Pacote Mistico';

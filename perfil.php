@@ -6,8 +6,13 @@ exigirLogin();
 require_once __DIR__ . '/config/conexao.php';
 require_once __DIR__ . '/classes/autoload.php';
 
+
 $usuarios = new Usuario($pdo);
+$cartasModel = new Carta($pdo);
+$conquistasModel = new Conquista($pdo);
+
 $usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
+$usuarioId = (int)$_SESSION['usuario_id'];
 
 if (!$usuario) {
     header('Location: logout.php');
@@ -50,6 +55,42 @@ $avatar = !empty($usuario['avatar'])
     $nivel = (int) $nivelAtual['nivel'];
     $proxNivel = (int)$proximoNivel["experiencia_necessaria"] ?? $nivelAtual['experiencia_necessaria'];
     $progressoXP =(int) (($xp - $nivelAtual["experiencia_necessaria"]) / ($proxNivel - $nivelAtual["experiencia_necessaria"]) * 100);
+
+
+    //
+    // Estastisticas: cartas
+    //
+
+    $raridade = (string)($_GET['raridade'] ?? '');
+    if (!isset($raridades[$raridade])) {
+        $raridade = '';
+    }
+
+
+    $cartas = $cartasModel->listarColecao($usuarioId, '', $raridade);
+    $qtdCartas = count($cartas);
+    $totalCartas = 0;
+
+    $rarasOuSuperiores = 0;
+    
+    foreach ($cartas as $carta) {
+
+    $totalCartas += (int)$carta['quantidade'];
+    $rc = $carta['raridade']; // rc = raridadeCarta, so para abreviar
+
+    if ($rc == 'rara' || $rc == 'epica' || $rc == 'lendaria') {
+        $rarasOuSuperiores += (int) $carta['quantidade'];
+    }
+
+    }
+
+
+    
+    //
+    // Estastisticas: Conquistas
+    //
+
+    $totalConquistas = $conquistasModel->contarConquistas($usuarioId);
 
 ?>
 
@@ -162,7 +203,7 @@ $avatar = !empty($usuario['avatar'])
                         <i class="bi bi-collection"></i>
                     </span>
                     <div class="muted mb-1">Cartas diferentes</div>
-                    <div class="stat-number">25</div>
+                    <div class="stat-number"><?=$qtdCartas?></div>
                 </div>
             </div>
 
@@ -172,7 +213,7 @@ $avatar = !empty($usuario['avatar'])
                         <i class="bi bi-layers"></i>
                     </span>
                     <div class="muted mb-1">Total de cartas</div>
-                    <div class="stat-number">87</div>
+                    <div class="stat-number"><?=$totalCartas?></div>
                 </div>
             </div>
 
@@ -182,7 +223,7 @@ $avatar = !empty($usuario['avatar'])
                         <i class="bi bi-gem"></i>
                     </span>
                     <div class="muted mb-1">Cartas raras ou superiores</div>
-                    <div class="stat-number">12</div>
+                    <div class="stat-number"><?=$rarasOuSuperiores?></div>
                 </div>
             </div>
 
@@ -192,7 +233,7 @@ $avatar = !empty($usuario['avatar'])
                         <i class="bi bi-trophy"></i>
                     </span>
                     <div class="muted mb-1">Conquistas</div>
-                    <div class="stat-number">4</div>
+                    <div class="stat-number"><?=$totalConquistas?></div>
                 </div>
             </div>
 

@@ -3,6 +3,8 @@ require_once __DIR__ . '/../config/auth.php';
 require_once __DIR__ . '/../config/conexao.php';
 require_once __DIR__ . '/../classes/autoload.php';
 
+$conquistaModel = new Conquista($pdo);
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../loja.php');
     exit;
@@ -41,6 +43,12 @@ $pacotesModel = new Pacote($pdo);
 
 try {
     $resultado = $pacotesModel->comprar($usuarioId, $pacoteId, $tokenRecebido);
+
+    try {
+        $conquistaModel->verificarCompras($usuarioId);
+    } catch (Throwable $e) {
+        error_log('Erro ao verificar conquistas após compra: ' . $e->getMessage());
+    }
 
     // Consome o token: o formulário não pode ser enviado novamente
     unset($_SESSION['compra_token']);

@@ -214,6 +214,8 @@ UNION ALL SELECT p.id,'epica',40 FROM pacotes p WHERE p.nome='Pacote Arcano'
 UNION ALL SELECT p.id,'epica',100 FROM pacotes p WHERE p.nome='Pacote Celestial'
 ON DUPLICATE KEY UPDATE peso=VALUES(peso);
 
+
+-- niveis
 INSERT INTO niveis (nivel, experiencia_necessaria)
 VALUES
 (1, 0),
@@ -226,3 +228,35 @@ VALUES
 (8, 1850),
 (9, 2400),
 (10, 3000);
+
+-- conquistas
+INSERT INTO conquistas
+(nome, descricao, icone, pontos, experiencia, criterio, valor_criterio)
+VALUES
+(
+    'Primeira Compra',
+    'Compre seu primeiro pacote.',
+    'primeira-compra.png',
+    10,
+    50,
+    'comprar_pacotes',
+    1
+),
+(
+    'Colecionador',
+    'Compre 5 pacotes.',
+    'colecionador.png',
+    25,
+    100,
+    'comprar_pacotes',
+    5
+),
+(
+    'Grande Investidor',
+    'Compre 10 pacotes.',
+    'grande-investidor.png',
+    50,
+    200,
+    'comprar_pacotes',
+    10
+);

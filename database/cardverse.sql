@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
  email VARCHAR(150) NOT NULL UNIQUE,
  senha VARCHAR(255) NOT NULL,
  moedas INT UNSIGNED NOT NULL DEFAULT 500,
+ pontos INT UNSIGNED NOT NULL DEFAULT 0,
+ experiencia INT UNSIGNED NOT NULL DEFAULT 0,
+ avatar VARCHAR(255) NULL,
  tipo ENUM('usuario','admin') NOT NULL DEFAULT 'usuario',
  criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -114,6 +117,53 @@ CREATE TABLE IF NOT EXISTS resgates_diarios (
  CONSTRAINT fk_resgate_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
  CONSTRAINT chk_resgate_moedas CHECK (moedas_recebidas > 0)
 ) ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS niveis (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nivel INT UNSIGNED NOT NULL UNIQUE,
+    experiencia_necessaria INT UNSIGNED NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS conquistas (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    icone VARCHAR(255) NULL,
+
+    pontos INT UNSIGNED NOT NULL DEFAULT 0,
+    experiencia INT UNSIGNED NOT NULL DEFAULT 0,
+
+    criterio VARCHAR(50) NOT NULL,
+    valor_criterio INT UNSIGNED NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS usuarios_conquistas (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    id_usuario INT UNSIGNED NOT NULL,
+    id_conquista INT UNSIGNED NOT NULL,
+
+    data_desbloqueio DATETIME NOT NULL
+        DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT uk_usuario_conquista
+        UNIQUE (id_usuario, id_conquista),
+
+    CONSTRAINT fk_uc_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES usuarios(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_uc_conquista
+        FOREIGN KEY (id_conquista)
+        REFERENCES conquistas(id)
+) ENGINE=InnoDB;
+
+
 
 INSERT INTO cartas (nome,descricao,imagem,raridade,ataque,defesa) VALUES
 ('Cavaleiro de Ferro','Um defensor de armadura resistente.','cavaleiro-ferro.png','comum',35,70),

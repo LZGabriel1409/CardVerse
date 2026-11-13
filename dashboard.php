@@ -34,19 +34,10 @@ $pacotesPendentes = $aberturasModel->contarPendentes((int)$_SESSION['usuario_id'
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-dark nav-game py-3">
-    <div class="container">
-        <span class="navbar-brand brand mb-0">
-            <span class="brand-mark"><i class="bi bi-stars logo-star"></i></span>CardVerse
-        </span>
-        <form action="logout.php" method="post">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(tokenCsrf()) ?>">
-            <button class="btn btn-outline-game btn-sm px-3" type="submit">
-                <i class="bi bi-box-arrow-right me-1"></i>Sair
-            </button>
-        </form>
-    </div>
-</nav>
+
+<?php
+include __DIR__ . '/includes/header.php';
+?>
 
 <main class="container py-5">
     <!-- Boas-vindas -->

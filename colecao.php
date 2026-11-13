@@ -74,30 +74,10 @@ $semResultados = !$colecaoVazia && count($cartas) === 0;
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand navbar-dark nav-game py-3">
-    <div class="container gap-2">
-        <a class="navbar-brand brand mb-0" href="dashboard.php">
-            <span class="brand-mark"><i class="bi bi-stars logo-star"></i></span>CardVerse
-        </a>
-        <div class="navbar-links d-none d-md-flex align-items-center gap-1 ms-2">
-            <a class="nav-link" href="dashboard.php"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
-            <a class="nav-link active" href="colecao.php" aria-current="page"><i class="bi bi-grid-3x3-gap me-1"></i>Minha coleção</a>
-            <a class="nav-link" href="loja.php"><i class="bi bi-shop me-1"></i>Loja</a>
-            <a class="nav-link" href="abrir-pacote.php"><i class="bi bi-envelope-open me-1"></i>Abrir pacotes</a>
-        </div>
-        <div class="ms-auto d-flex align-items-center gap-2">
-            <span class="tag d-none d-sm-inline-block">
-                <i class="bi bi-coin me-1"></i><?= number_format((int)$usuario['moedas'], 0, ',', '.') ?>
-            </span>
-            <form action="logout.php" method="post" class="mb-0">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(tokenCsrf()) ?>">
-                <button class="btn btn-outline-game btn-sm px-3" type="submit">
-                    <i class="bi bi-box-arrow-right me-1"></i>Sair
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
+    
+<?php
+include __DIR__ . '/includes/header.php';
+?>
 
 <main class="container py-5">
     <!-- Boas-vindas -->

@@ -213,3 +213,16 @@ UNION ALL SELECT p.id,'rara',60 FROM pacotes p WHERE p.nome='Pacote Arcano'
 UNION ALL SELECT p.id,'epica',40 FROM pacotes p WHERE p.nome='Pacote Arcano'
 UNION ALL SELECT p.id,'epica',100 FROM pacotes p WHERE p.nome='Pacote Celestial'
 ON DUPLICATE KEY UPDATE peso=VALUES(peso);
+
+INSERT INTO niveis (nivel, experiencia_necessaria)
+VALUES
+(1, 0),
+(2, 100),
+(3, 250),
+(4, 450),
+(5, 700),
+(6, 1000),
+(7, 1400),
+(8, 1850),
+(9, 2400),
+(10, 3000);

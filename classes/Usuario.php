@@ -15,7 +15,7 @@ class Usuario
         }
 
         $stmt = $this->pdo->prepare(
-            'SELECT id, nome, email, moedas, tipo, criado_em
+            'SELECT id, nome, email, moedas, pontos, experiencia, avatar, tipo, criado_em
              FROM usuarios
              WHERE id = ?
              LIMIT 1'

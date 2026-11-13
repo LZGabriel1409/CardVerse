@@ -22,6 +22,7 @@ body {
     background-size: auto, 30px 30px;
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
+
 a { color: #d3b9ff; text-decoration: none; }
 a:hover { color: var(--gold); }
 .muted { color: var(--muted); }
@@ -355,3 +356,440 @@ a:hover { color: var(--gold); }
 
 @media (max-width: 991px) { .auth-aside { min-height: 280px; padding: 28px; } .card-stack { display: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+
+
+/* ========================================
+   PERFIL DO JOGADOR - CARDVERSE
+======================================== */
+
+.profile-page {
+    max-width: 1160px;
+}
+
+/* Cabeçalho do perfil */
+
+.profile-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 16px;
+    box-shadow: 0 14px 34px #0003;
+}
+
+.profile-main {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    display: block;
+    width: 125px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    padding: 4px;
+    background: #30283e;
+}
+
+.profile-online {
+    position: absolute;
+    right: 7px;
+    bottom: 8px;
+    width: 17px;
+    height: 17px;
+    border: 3px solid var(--surface);
+    border-radius: 50%;
+    background: #66d48b;
+}
+
+.profile-identity h1 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 850;
+    margin: 0;
+}
+
+.profile-title {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 11px;
+    border: 1px solid #77613e;
+    border-radius: 50px;
+    background: #3b3022;
+    color: var(--gold);
+    font-size: .78rem;
+    font-weight: 750;
+}
+
+.profile-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .85rem;
+    background: #12121c;
+}
+
+.profile-member i {
+    color: var(--gold);
+    font-size: 1.2rem;
+}
+
+.profile-member strong {
+    display: block;
+    color: var(--text);
+}
+
+
+/* Nível e experiência */
+
+.profile-level-panel,
+.profile-panel {
+    padding: 25px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 14px 34px #0003;
+}
+
+.level-number {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 17px;
+    border: 1px solid #826c3e;
+    border-radius: 12px;
+    background: #3b3022;
+    color: var(--gold);
+}
+
+.level-number span {
+    font-size: .7rem;
+    font-weight: 850;
+    letter-spacing: .1em;
+}
+
+.level-number strong {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.level-progress-info,
+.level-footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: .85rem;
+    font-weight: 650;
+}
+
+.profile-progress {
+    height: 12px;
+    overflow: hidden;
+    border: 1px solid #43394f;
+    border-radius: 50px;
+    background: #12121c;
+}
+
+.profile-progress .progress-bar {
+    border-radius: 50px;
+    background: linear-gradient(90deg, #6743ac, #b18cde);
+    box-shadow: 0 0 12px #9870df66;
+}
+
+.level-footer {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 500;
+}
+
+.level-footer i {
+    color: var(--gold);
+}
+
+
+/* Estatísticas */
+
+.profile-stat {
+    min-height: 160px;
+}
+
+.profile-stat .stat-number {
+    font-size: 2rem;
+}
+
+
+/* Painéis de coleção e ranking */
+
+.profile-panel-icon {
+    color: var(--gold);
+    font-size: 1.5rem;
+}
+
+.collection-progress-number {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.collection-progress-number strong {
+    color: var(--text);
+    font-size: 2.3rem;
+    font-weight: 850;
+}
+
+.collection-progress-fill {
+    background: linear-gradient(90deg, #b18c51, var(--gold)) !important;
+    box-shadow: 0 0 12px #f4c95d55;
+}
+
+.ranking-position {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #77613e;
+    border-radius: 12px;
+    background: linear-gradient(110deg, #3b3022, #241f33);
+}
+
+.ranking-position > i {
+    color: var(--gold);
+    font-size: 2.3rem;
+}
+
+.ranking-position span,
+.ranking-position strong {
+    display: block;
+}
+
+.ranking-position strong {
+    color: var(--gold);
+    font-size: 1.6rem;
+    font-weight: 850;
+}
+
+.ranking-points {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.ranking-points strong {
+    color: var(--text);
+    font-size: 1.3rem;
+    font-weight: 850;
+}
+
+
+/* Conquistas */
+
+.achievement-card {
+    position: relative;
+    height: 100%;
+    min-height: 230px;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+    transition: transform .2s, border-color .2s;
+}
+
+.achievement-card.unlocked:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+}
+
+.achievement-card.locked {
+    opacity: .58;
+}
+
+.achievement-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 13px;
+    border: 1px solid #655279;
+    border-radius: 12px;
+    background: #332a44;
+    color: var(--purple);
+    font-size: 1.5rem;
+}
+
+.achievement-icon.gold {
+    color: var(--gold);
+    border-color: #826c3e;
+    background: #3b3022;
+}
+
+.achievement-icon.purple {
+    color: #c7a3ff;
+    border-color: #655279;
+    background: #332a44;
+}
+
+.achievement-status {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--gold);
+    font-size: .68rem;
+    font-weight: 850;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.achievement-card h3 {
+    font-size: 1rem;
+    font-weight: 850;
+    margin-bottom: 7px;
+}
+
+.achievement-card p {
+    min-height: 38px;
+    margin-bottom: 14px;
+    color: var(--muted);
+    font-size: .85rem;
+}
+
+.achievement-reward {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 700;
+}
+
+.achievement-reward i {
+    color: var(--gold);
+}
+
+
+/* Atividade recente */
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.activity-item:first-child {
+    padding-top: 0;
+}
+
+.activity-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.activity-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 43px;
+    height: 43px;
+    border: 1px solid #826c3e;
+    border-radius: 11px;
+    background: #3b3022;
+    color: var(--gold);
+    font-size: 1.2rem;
+}
+
+.activity-icon.purple {
+    border-color: #655279;
+    background: #332a44;
+    color: var(--purple);
+}
+
+.activity-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.activity-content strong {
+    font-size: .9rem;
+}
+
+.activity-content span {
+    color: var(--muted);
+    font-size: .8rem;
+}
+
+.activity-date {
+    color: var(--muted);
+    font-size: .75rem;
+    white-space: nowrap;
+}
+
+
+/* Responsividade */
+
+@media (max-width: 767px) {
+    .profile-hero {
+        padding: 22px;
+    }
+
+    .profile-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 17px;
+    }
+
+    .profile-avatar {
+        width: 105px;
+        height: 105px;
+    }
+
+    .profile-member {
+        width: 100%;
+    }
+
+    .profile-level-panel,
+    .profile-panel {
+        padding: 20px;
+    }
+
+    .activity-item {
+        flex-wrap: wrap;
+    }
+
+    .activity-date {
+        margin-left: 57px;
+    }
+}
+

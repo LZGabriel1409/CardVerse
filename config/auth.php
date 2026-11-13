@@ -9,8 +9,46 @@ function usuarioLogado(): bool {
 
 function exigirLogin(): void {
     if (!usuarioLogado()) {
-        header('Location: login.php');
+        header("Location: $destino");
         exit;
+    }
+}
+
+function usuarioAdmin(PDO $pdo): bool {
+    if (!usuarioLogado()) {
+        return false;
+    }
+
+    $stmt = $pdo->prepare(
+        "SELECT tipo
+        FROM usuarios
+        WHERE id = ?
+        LIMIT 1"
+    );
+
+        $stmt->execute([(int) $_SESSION['usuario_id']]);
+
+        $tipo = $stmt->fetchColumn();
+
+        return $tipo === 'admin';
+}
+
+function exigirAdmin(
+    PDO $pdo,
+    string $destinoLogin = '../login.php'
+) : void {
+
+    exigirLogin($destinoLogin);
+
+    if(!usuarioAdmin($pdo)) {
+
+    http_response_code(403);
+
+    exit('
+    <h1>Acesso Negado!</h1>
+    <p>Você não possui permissão para acessar está área.</p>
+    <a href="../dashboard.php">Voltar ao Cardverse</a>
+    ');
     }
 }
 

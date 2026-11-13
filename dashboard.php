@@ -129,6 +129,13 @@ include __DIR__ . '/includes/header.php';
                     <p class="muted mb-0">Negocie cartas com outros jogadores. Em breve!</p>
                 </div>
             </div>
+            <div class="col-md-6 col-xl-3">
+                <a class="feature-card" href="perfil.php">
+                   <i class="bi bi-person"></i>
+                    <h3 class="h5 mt-3">Perfil</h3>
+                    <p class="muted mb-0">Acesse seu perfil e veja sua estastisticas.</p>
+                </a>
+            </div>
         </div>
     </section>
 </main>

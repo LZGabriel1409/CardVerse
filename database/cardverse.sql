@@ -252,11 +252,74 @@ VALUES
     5
 ),
 (
-    'Grande Investidor',
+    'Fã de carteirinha',
     'Compre 10 pacotes.',
-    'grande-investidor.png',
+    'Fa-de-carteirinha.png',
     50,
     200,
     'comprar_pacotes',
     10
+),
+(
+    'Grande Investidor',
+    'Compre 50 pacotes.',
+    'grande-investidor.png',
+    100,
+    400,
+    'comprar_pacotes',
+    50
+),
+(
+    'Mega Investidor',
+    'Compre 100 pacotes.',
+    'mega-investidor.png',
+    250,
+    600,
+    'comprar_pacotes',
+    100
+),
+(
+    'Mestre dos pacotes',
+    'Compre 250 pacotes.',
+    'mestre-dos-pacotes.png',
+    750,
+    800,
+    'comprar_pacotes',
+    250
+),
+(
+    'Magnata da coleção',
+    'Compre 500 pacotes.',
+    'magnata-da-colecao.png',
+    1000,
+    1100,
+    'comprar_pacotes',
+    500
+),
+(
+    'Lenda dos pacotes',
+    'Compre 1000 pacotes.',
+    'lenda-dos-pacotes.png',
+    1000,
+    1500,
+    'comprar_pacotes',
+    1000
+),
+(
+    'Colecionador Implacável',
+    'Compre 10000 pacotes.',
+    'colecionador-implacavel.png',
+    1500,
+    2400,
+    'comprar_pacotes',
+    10000
+),
+(
+    'Viciado em Cartas',
+    'Compre 100000 pacotes.',
+    'viciado-em-cartas.png',
+    3500,
+    5500,
+    'comprar_pacotes',
+    100000
 );

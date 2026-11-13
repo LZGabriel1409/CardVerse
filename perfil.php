@@ -10,6 +10,7 @@ require_once __DIR__ . '/classes/autoload.php';
 $usuarios = new Usuario($pdo);
 $cartasModel = new Carta($pdo);
 $conquistasModel = new Conquista($pdo);
+$rankingModel = new Ranking($pdo);
 
 $usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
 $usuarioId = (int)$_SESSION['usuario_id'];
@@ -30,6 +31,7 @@ $avatar = !empty($usuario['avatar'])
 //
 
     $xp = (int)$usuario['experiencia'];
+    $pontosAtuais = (int)$usuario['pontos'];
 
     $stmt = $pdo->query("
     SELECT nivel, experiencia_necessaria FROM niveis
@@ -70,6 +72,7 @@ $avatar = !empty($usuario['avatar'])
     $cartas = $cartasModel->listarColecao($usuarioId, '', $raridade);
     $qtdCartas = count($cartas);
     $totalCartas = 0;
+    $cartasExistentes = $cartasModel->qtdCartasExistentes();
 
     $rarasOuSuperiores = 0;
     
@@ -87,10 +90,27 @@ $avatar = !empty($usuario['avatar'])
 
     
     //
-    // Estastisticas: Conquistas
+    // Estastisticas/geral: Conquistas
     //
 
     $totalConquistas = $conquistasModel->contarConquistas($usuarioId);
+    $numExistenteConquistas = $conquistasModel->listarConquistas();
+    $conquistasPreview = $conquistasModel->conquistasPreview($usuarioId);
+
+
+    //
+    // progressão da cole~çao
+    //
+
+    $progressoColecao =(int) (($qtdCartas / $cartasExistentes) * 100);
+    $cartasRestantes =(int) ($cartasExistentes - $qtdCartas);
+
+
+    //
+    // Ranking
+    //
+
+    $posicaoAtual = $rankingModel->buscarPosicao($usuarioId);
 
 ?>
 
@@ -253,17 +273,17 @@ $avatar = !empty($usuario['avatar'])
                 </div>
 
                 <div class="collection-progress-number">
-                    <strong>25</strong>
-                    <span class="muted">de 50 cartas descobertas</span>
+                    <strong><?=$qtdCartas?></strong>
+                    <span class="muted">de <?=$cartasExistentes?> cartas descobertas</span>
                 </div>
 
                 <div class="progress profile-progress mt-3">
-                    <div class="progress-bar collection-progress-fill" style="width: 50%"></div>
+                    <div class="progress-bar collection-progress-fill" style="width: <?=$progressoColecao?>%"></div>
                 </div>
 
                 <div class="d-flex justify-content-between mt-2">
-                    <span class="muted small">50% concluído</span>
-                    <span class="gold small fw-bold">25 cartas restantes</span>
+                    <span class="muted small"><?=$progressoColecao?>% concluído</span>
+                    <span class="gold small fw-bold"><?=$cartasRestantes?> cartas restantes</span>
                 </div>
 
                 <a href="colecao.php" class="btn btn-outline-game mt-4">
@@ -287,13 +307,13 @@ $avatar = !empty($usuario['avatar'])
                     <i class="bi bi-trophy-fill"></i>
                     <div>
                         <span class="muted small">Sua posição atual</span>
-                        <strong>12º lugar</strong>
+                        <strong><?=$posicaoAtual?>º lugar</strong>
                     </div>
                 </div>
 
                 <div class="ranking-points mt-3">
                     <span class="muted">Pontos no ranking</span>
-                    <strong>1.250</strong>
+                    <strong><?=$pontosAtuais?></strong>
                 </div>
 
                 <p class="muted small mt-3 mb-0">
@@ -306,6 +326,7 @@ $avatar = !empty($usuario['avatar'])
     </section>
 
 
+        
     <!-- Conquistas -->
     <section class="mb-5">
 
@@ -315,77 +336,110 @@ $avatar = !empty($usuario['avatar'])
                 <h2 class="section-title h4 mb-0">Conquistas</h2>
             </div>
 
-            <span class="tag">4 de 10 desbloqueadas</span>
+            <span class="tag">
+                <?= $totalConquistas ?> de <?= $numExistenteConquistas ?> desbloqueadas
+            </span>
         </div>
 
         <div class="row g-3">
 
-            <div class="col-md-6 col-xl-3">
-                <div class="achievement-card unlocked">
-                    <div class="achievement-icon gold">
-                        <i class="bi bi-collection-fill"></i>
-                    </div>
-                    <span class="achievement-status">Desbloqueada</span>
-                    <h3>Primeira coleção</h3>
-                    <p>Consiga sua primeira carta.</p>
-                    <div class="achievement-reward">
-                        <span><i class="bi bi-star-fill"></i> +50 XP</span>
-                        <span><i class="bi bi-coin"></i> +100 pontos</span>
-                    </div>
-                </div>
-            </div>
+            <?php foreach ($conquistasPreview as $conquista): ?>
 
-            <div class="col-md-6 col-xl-3">
-                <div class="achievement-card unlocked">
-                    <div class="achievement-icon purple">
-                        <i class="bi bi-box-seam-fill"></i>
-                    </div>
-                    <span class="achievement-status">Desbloqueada</span>
-                    <h3>Primeira abertura</h3>
-                    <p>Abra seu primeiro pacote.</p>
-                    <div class="achievement-reward">
-                        <span><i class="bi bi-star-fill"></i> +30 XP</span>
-                        <span><i class="bi bi-coin"></i> +50 pontos</span>
-                    </div>
-                </div>
-            </div>
+                <?php
+                    $desbloqueada = $conquista['usuario_conquista_id'] !== null;
 
-            <div class="col-md-6 col-xl-3">
-                <div class="achievement-card locked">
-                    <div class="achievement-icon">
-                        <i class="bi bi-gem"></i>
-                    </div>
-                    <span class="achievement-status">Bloqueada</span>
-                    <h3>Caçador de raridades</h3>
-                    <p>Consiga 10 cartas raras.</p>
-                    <div class="achievement-reward">
-                        <span><i class="bi bi-lock-fill"></i> Recompensa bloqueada</span>
-                    </div>
-                </div>
-            </div>
+                    $icone = !empty($conquista['icone'])
+                        ? $conquista['icone']
+                        : 'bi-award-fill';
+                ?>
 
-            <div class="col-md-6 col-xl-3">
-                <div class="achievement-card locked">
-                    <div class="achievement-icon">
-                        <i class="bi bi-trophy-fill"></i>
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="achievement-card <?= $desbloqueada ? 'unlocked' : 'locked' ?>">
+
+                        <div class="achievement-icon <?= $desbloqueada ? 'gold' : '' ?>">
+                            <i class="bi <?= htmlspecialchars($icone) ?>"></i>
+                        </div>
+
+                        <span class="achievement-status">
+                            <?= $desbloqueada ? 'Desbloqueada' : 'Bloqueada' ?>
+                        </span>
+
+                        <h3>
+                            <?= htmlspecialchars($conquista['nome']) ?>
+                        </h3>
+
+                        <p>
+                            <?= htmlspecialchars($conquista['descricao']) ?>
+                        </p>
+
+                        <div class="achievement-reward">
+
+                            <?php if ($desbloqueada): ?>
+
+                                <span>
+                                    <i class="bi bi-star-fill"></i>
+                                    +<?= (int)$conquista['experiencia'] ?> XP
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-coin"></i>
+                                    +<?= (int)$conquista['pontos'] ?> pontos
+                                </span>
+
+                            <?php else: ?>
+
+                                <span>
+                                    <i class="bi bi-lock-fill"></i>
+                                    Recompensa bloqueada
+                                </span>
+
+                            <?php endif; ?>
+
+                        </div>
+
                     </div>
-                    <span class="achievement-status">Bloqueada</span>
-                    <h3>Colecionador lendário</h3>
-                    <p>Consiga sua primeira carta lendária.</p>
-                    <div class="achievement-reward">
-                        <span><i class="bi bi-lock-fill"></i> Recompensa bloqueada</span>
+
+                </div>
+
+            <?php endforeach; ?>
+
+            <?php if (empty($conquistasPreview)): ?>
+
+                <div class="col-12">
+                    <div class="profile-panel text-center py-4">
+                        <i class="bi bi-trophy fs-1 muted"></i>
+                        <h3 class="h5 mt-3">Nenhuma conquista cadastrada</h3>
+                        <p class="muted mb-0">
+                            As conquistas aparecerão aqui quando forem adicionadas ao jogo.
+                        </p>
                     </div>
                 </div>
-            </div>
+
+            <?php endif; ?>
+
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="conquistas.php" class="btn btn-outline-game">
+                <i class="bi bi-trophy me-2"></i>
+                Ver todas as conquistas
+                <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+
+    </section>
+
+
 
         </div>
     </section>
 
 
-    <!-- Atividade recente -->
-    <section class="mb-4">
+    <!-- Missões -->
+    <!-- <section class="mb-4">
 
-        <h2 class="section-title h4 mb-3">Atividade recente</h2>
+        <h2 class="section-title h4 mb-3">Missões Diarias</h2>
 
         <div class="profile-panel activity-list">
 
@@ -424,7 +478,7 @@ $avatar = !empty($usuario['avatar'])
 
         </div>
 
-    </section>
+    </section> -->
 
 </main>
 

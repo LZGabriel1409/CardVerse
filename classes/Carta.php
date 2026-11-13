@@ -149,4 +149,12 @@ class Carta
         );
         $stmt->execute([$usuarioId, $cartaId, $quantidade, $quantidade]);
     }
+
+    public function qtdCartasExistentes() {
+        $stmt = $this->pdo->query("
+            SELECT count(*) FROM `cartas`;
+        ");
+
+        return (int)$stmt->fetchColumn();
+    }
 }

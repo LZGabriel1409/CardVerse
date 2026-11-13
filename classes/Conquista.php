@@ -9,6 +9,46 @@ class Conquista
         $this->pdo = $pdo;
     }
 
+    // para pegar a quantidade de conquistas existentes no jogo
+    public function listarConquistas()
+    {
+        $stmt = $this->pdo->query("
+            SELECT count(*) FROM `conquistas`;
+        ");
+
+        return (int)$stmt->fetchColumn();
+    }
+
+    // para mostrar as conquistas no perfil
+    public function conquistasPreview(int $usuarioId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT
+                c.id,
+                c.nome,
+                c.descricao,
+                c.icone,
+                c.pontos,
+                c.experiencia,
+                uc.id AS usuario_conquista_id,
+                uc.data_desbloqueio
+            FROM conquistas c
+            LEFT JOIN usuarios_conquistas uc
+                ON uc.id_conquista = c.id
+                AND uc.id_usuario = ?
+            ORDER BY
+                (uc.id IS NOT NULL) DESC,
+                uc.data_desbloqueio DESC,
+                c.id ASC
+            LIMIT 4
+        ");
+
+        $stmt->execute([$usuarioId]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
     // Buscar conquistas desbloqueadas pelo usuário
     public function contarConquistas(int $usuarioId): int
     {

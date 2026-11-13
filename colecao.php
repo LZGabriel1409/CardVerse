@@ -82,6 +82,8 @@ $semResultados = !$colecaoVazia && count($cartas) === 0;
         <div class="navbar-links d-none d-md-flex align-items-center gap-1 ms-2">
             <a class="nav-link" href="dashboard.php"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
             <a class="nav-link active" href="colecao.php" aria-current="page"><i class="bi bi-grid-3x3-gap me-1"></i>Minha coleção</a>
+            <a class="nav-link" href="loja.php"><i class="bi bi-shop me-1"></i>Loja</a>
+            <a class="nav-link" href="abrir-pacote.php"><i class="bi bi-envelope-open me-1"></i>Abrir pacotes</a>
         </div>
         <div class="ms-auto d-flex align-items-center gap-2">
             <span class="tag d-none d-sm-inline-block">

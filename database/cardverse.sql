@@ -72,10 +72,22 @@ CREATE TABLE IF NOT EXISTS aberturas (
  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  usuario_id INT UNSIGNED NOT NULL,
  pacote_id INT UNSIGNED NOT NULL,
+ compra_id INT UNSIGNED NOT NULL,
  data_abertura DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  cartas_recebidas JSON NOT NULL,
+ UNIQUE KEY uq_aberturas_compra (compra_id),
  CONSTRAINT fk_abertura_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE RESTRICT,
- CONSTRAINT fk_abertura_pacote FOREIGN KEY (pacote_id) REFERENCES pacotes(id) ON DELETE RESTRICT
+ CONSTRAINT fk_abertura_pacote FOREIGN KEY (pacote_id) REFERENCES pacotes(id) ON DELETE RESTRICT,
+ CONSTRAINT fk_abertura_compra FOREIGN KEY (compra_id) REFERENCES compras(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS pacote_chances (
+ pacote_id INT UNSIGNED NOT NULL,
+ raridade ENUM('comum','rara','epica','lendaria') NOT NULL,
+ peso TINYINT UNSIGNED NOT NULL DEFAULT 0,
+ PRIMARY KEY (pacote_id,raridade),
+ CONSTRAINT fk_chance_pacote FOREIGN KEY (pacote_id) REFERENCES pacotes(id) ON DELETE CASCADE,
+ CONSTRAINT chk_chance_peso CHECK (peso <= 100)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS trocas (
@@ -142,3 +154,12 @@ CROSS JOIN cartas c
 WHERE (p.nome='Pacote Mistico' AND c.raridade IN ('comum','rara','epica'))
    OR (p.nome='Pacote Arcano' AND c.raridade IN ('rara','epica','lendaria'))
    OR (p.nome='Pacote Celestial' AND c.raridade IN ('epica','lendaria'));
+
+INSERT INTO pacote_chances (pacote_id,raridade,peso)
+SELECT p.id,'comum',55 FROM pacotes p WHERE p.nome='Pacote Mistico'
+UNION ALL SELECT p.id,'rara',35 FROM pacotes p WHERE p.nome='Pacote Mistico'
+UNION ALL SELECT p.id,'epica',10 FROM pacotes p WHERE p.nome='Pacote Mistico'
+UNION ALL SELECT p.id,'rara',60 FROM pacotes p WHERE p.nome='Pacote Arcano'
+UNION ALL SELECT p.id,'epica',40 FROM pacotes p WHERE p.nome='Pacote Arcano'
+UNION ALL SELECT p.id,'epica',100 FROM pacotes p WHERE p.nome='Pacote Celestial'
+ON DUPLICATE KEY UPDATE peso=VALUES(peso);

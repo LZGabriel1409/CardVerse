@@ -8,6 +8,7 @@ require_once __DIR__ . '/classes/autoload.php';
 $usuarioId = (int)$_SESSION['usuario_id'];
 $usuarios = new Usuario($pdo);
 $pacotesModel = new Pacote($pdo);
+$aberturasModel = new Abertura($pdo);
 
 // Dados do jogador autenticado
 $usuario = $usuarios->buscarPorId($usuarioId);
@@ -21,6 +22,9 @@ $saldo = (int)$usuario['moedas'];
 
 // Pacotes disponíveis na loja
 $pacotes = $pacotesModel->listarAtivos();
+
+// Pacotes comprados e ainda não abertos
+$pacotesPendentes = $aberturasModel->contarPendentes($usuarioId);
 
 // Token de uso único para evitar envio duplicado da compra
 if (empty($_SESSION['compra_token'])) {
@@ -50,6 +54,7 @@ $flash = pegarMensagem();
             <a class="nav-link" href="dashboard.php"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
             <a class="nav-link" href="colecao.php"><i class="bi bi-grid-3x3-gap me-1"></i>Minha coleção</a>
             <a class="nav-link active" href="loja.php" aria-current="page"><i class="bi bi-shop me-1"></i>Loja</a>
+            <a class="nav-link" href="abrir-pacote.php"><i class="bi bi-envelope-open me-1"></i>Abrir pacotes</a>
         </div>
         <div class="ms-auto d-flex align-items-center gap-2">
             <span class="tag d-none d-sm-inline-block">
@@ -80,6 +85,20 @@ $flash = pegarMensagem();
         </div>
     <?php endif; ?>
 
+    <?php if ($pacotesPendentes > 0): ?>
+        <a class="pending-banner" href="abrir-pacote.php">
+            <i class="bi bi-envelope-open"></i>
+            <span class="pending-text">
+                <strong>
+                    Você tem <?= $pacotesPendentes ?>
+                    <?= $pacotesPendentes === 1 ? 'pacote fechado' : 'pacotes fechados' ?> esperando!
+                </strong>
+                <span>Abra quando quiser e descubra as cartas que vão para a sua coleção.</span>
+            </span>
+            <span class="pending-cta">Abrir agora <i class="bi bi-arrow-right"></i></span>
+        </a>
+    <?php endif; ?>
+
     <?php if (count($pacotes) === 0): ?>
         <!-- Nenhum pacote ativo -->
         <section class="empty-state" aria-live="polite">
@@ -93,7 +112,7 @@ $flash = pegarMensagem();
     <?php else: ?>
         <div class="shop-note mb-4">
             <i class="bi bi-info-circle"></i>
-            <span>A compra debita as moedas imediatamente e fica registrada na sua conta. A abertura das cartas será liberada em uma próxima etapa.</span>
+            <span>A compra debita as moedas na hora e o pacote fica guardado em "Abrir pacotes". A revelação e a entrega das cartas acontecem quando você abrir.</span>
         </div>
 
         <!-- Pacotes -->
@@ -152,7 +171,7 @@ $flash = pegarMensagem();
                                 </div>
                                 <?php if ($chanceLendaria > 0): ?>
                                     <p class="pack-odds mb-0">
-                                        <i class="bi bi-stars me-1"></i>Chance de carta lendária: <?= $chanceLendaria ?>%
+                                        <i class="bi bi-stars me-1"></i>Chance de ao menos uma lendária: <?= $chanceLendaria ?>%
                                     </p>
                                 <?php endif; ?>
 

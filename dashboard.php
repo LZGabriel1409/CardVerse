@@ -7,6 +7,7 @@ require_once __DIR__ . '/classes/autoload.php';
 
 $usuarios = new Usuario($pdo);
 $cartas = new Carta($pdo);
+$aberturasModel = new Abertura($pdo);
 
 // Dados do jogador autenticado
 $usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
@@ -18,6 +19,9 @@ if (!$usuario) {
 
 // Estatísticas da coleção
 $colecao = $cartas->resumoColecao((int)$_SESSION['usuario_id']);
+
+// Pacotes comprados e ainda não abertos
+$pacotesPendentes = $aberturasModel->contarPendentes((int)$_SESSION['usuario_id']);
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -53,6 +57,21 @@ $colecao = $cartas->resumoColecao((int)$_SESSION['usuario_id']);
         <span class="tag"><i class="bi bi-lightning-charge-fill me-1"></i>Jogador do CardVerse</span>
     </section>
 
+    <!-- Banner de pacotes pendentes -->
+    <?php if ($pacotesPendentes > 0): ?>
+        <a class="pending-banner" href="abrir-pacote.php">
+            <i class="bi bi-envelope-open"></i>
+            <span class="pending-text">
+                <strong>
+                    Você tem <?= $pacotesPendentes ?>
+                    <?= $pacotesPendentes === 1 ? 'pacote fechado' : 'pacotes fechados' ?> para abrir!
+                </strong>
+                <span>Suas cartas estão esperando. Faça a revelação agora.</span>
+            </span>
+            <span class="pending-cta">Abrir pacotes <i class="bi bi-arrow-right"></i></span>
+        </a>
+    <?php endif; ?>
+
     <!-- Estatísticas reais do banco de dados -->
     <section aria-label="Suas estatísticas" class="row g-3 mb-5">
         <div class="col-md-4">
@@ -85,21 +104,34 @@ $colecao = $cartas->resumoColecao((int)$_SESSION['usuario_id']);
             
         </div>
         <div class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-6 col-xl-3">
                 <a class="feature-card" href="loja.php">
                     <i class="bi bi-box2-heart"></i>
                     <h3 class="h5 mt-3">Pacotes misteriosos</h3>
-                    <p class="muted mb-0">Compre pacotes com suas moedas e amplie a coleção.</p>
+                    <p class="muted mb-0">Compre pacotes com suas moedas e prepare novas descobertas.</p>
                 </a>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-xl-3">
+                <a class="feature-card" href="abrir-pacote.php">
+                    <i class="bi bi-envelope-open"></i>
+                    <h3 class="h5 mt-3">Abrir pacotes</h3>
+                    <p class="muted mb-0">
+                        <?php if ($pacotesPendentes > 0): ?>
+                            <?= $pacotesPendentes ?> <?= $pacotesPendentes === 1 ? 'pacote esperando' : 'pacotes esperando' ?> pela sua revelação.
+                        <?php else: ?>
+                            Revele cartas, descubra raridades e registre suas aberturas.
+                        <?php endif; ?>
+                    </p>
+                </a>
+            </div>
+            <div class="col-md-6 col-xl-3">
                 <a class="feature-card" href="colecao.php">
                     <i class="bi bi-grid-3x3-gap"></i>
                     <h3 class="h5 mt-3">Minha coleção</h3>
                     <p class="muted mb-0">Organize suas cartas, filtre por raridade e veja os detalhes.</p>
                 </a>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-xl-3">
                 <div class="feature-card is-locked">
                     <i class="bi bi-arrow-left-right"></i>
                     <h3 class="h5 mt-3">Trocas</h3>

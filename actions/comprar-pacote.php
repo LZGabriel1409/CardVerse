@@ -48,7 +48,8 @@ try {
     mensagem(
         'success',
         'Compra do pacote "' . $resultado['pacote']['nome'] . '" realizada com sucesso! '
-        . 'Foram debitadas ' . number_format($resultado['preco'], 0, ',', '.') . ' moedas.'
+        . 'Foram debitadas ' . number_format($resultado['preco'], 0, ',', '.') . ' moedas. '
+        . 'O pacote está esperando em "Abrir pacotes".'
     );
 } catch (LojaException $e) {
     switch ($e->getCode()) {

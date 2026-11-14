@@ -4,6 +4,7 @@ require_once __DIR__ . '/../config/conexao.php';
 require_once __DIR__ . '/../classes/autoload.php';
 
 $conquistaModel = new Conquista($pdo);
+$missaoModel = new Missao($pdo);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../loja.php');
@@ -49,6 +50,31 @@ try {
     } catch (Throwable $e) {
         error_log('Erro ao verificar conquistas após compra: ' . $e->getMessage());
     }
+
+
+    // Atualiza o progresso das missões após a compra
+    try {
+
+        // Garante que o jogador tenha recebido as missões do período atual
+        $missaoModel->listarDiarias($usuarioId);
+        $missaoModel->listarSemanais($usuarioId);
+
+        // Contabiliza a compra nas missões correspondentes
+        $missaoModel->registrarProgresso(
+            $usuarioId,
+            'comprar_pacotes',
+            1
+        );
+
+    } catch (Throwable $e) {
+
+        error_log(
+            'Erro ao atualizar missões após compra: '
+            . $e->getMessage()
+        );
+
+    }
+
 
     // Consome o token: o formulário não pode ser enviado novamente
     unset($_SESSION['compra_token']);

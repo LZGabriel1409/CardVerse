@@ -165,6 +165,78 @@ CREATE TABLE IF NOT EXISTS usuarios_conquistas (
 
 
 
+CREATE TABLE IF NOT EXISTS missoes (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    nome VARCHAR(100) NOT NULL,
+
+    descricao VARCHAR(255) NOT NULL,
+
+    icone VARCHAR(100) NULL,
+
+    tipo ENUM('diaria', 'semanal', 'especial') NOT NULL,
+
+    criterio VARCHAR(50) NOT NULL,
+
+    quantidade_necessaria INT UNSIGNED NOT NULL,
+
+    recompensa_moedas INT UNSIGNED NOT NULL DEFAULT 0,
+
+    recompensa_pontos INT UNSIGNED NOT NULL DEFAULT 0,
+
+    recompensa_xp INT UNSIGNED NOT NULL DEFAULT 0,
+
+    ativa BOOLEAN NOT NULL DEFAULT TRUE,
+
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    INDEX idx_missoes_tipo_ativa (tipo, ativa),
+
+    CHECK (quantidade_necessaria > 0)
+
+) ENGINE=InnoDB;
+
+
+
+
+CREATE TABLE IF NOT EXISTS usuarios_missoes (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    usuario_id INT UNSIGNED NOT NULL,
+
+    missao_id INT UNSIGNED NOT NULL,
+
+    progresso INT UNSIGNED NOT NULL DEFAULT 0,
+
+    periodo_inicio DATETIME NOT NULL,
+
+    periodo_fim DATETIME NOT NULL,
+
+    atribuida_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    concluida_em DATETIME NULL,
+
+    resgatada_em DATETIME NULL,
+
+    INDEX idx_usuario_missoes_periodo
+        (usuario_id, periodo_inicio, periodo_fim),
+
+    CONSTRAINT fk_usuarios_missoes_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_usuarios_missoes_missao
+        FOREIGN KEY (missao_id)
+        REFERENCES missoes(id)
+        ON DELETE RESTRICT,
+
+    CHECK (periodo_fim > periodo_inicio)
+
+) ENGINE=InnoDB;
+
+
+
 INSERT INTO cartas (nome,descricao,imagem,raridade,ataque,defesa) VALUES
 ('Cavaleiro de Ferro','Um defensor de armadura resistente.','cavaleiro-ferro.png','comum',35,70),
 ('Arqueira Lunar','Ataca de longe com flechas brilhantes.','arqueira-lunar.png','comum',50,30),
@@ -322,4 +394,265 @@ VALUES
     5500,
     'comprar_pacotes',
     100000
+);
+
+--Missoes
+
+
+-- =========================================
+-- DESATIVAR CATÁLOGO ANTERIOR
+-- =========================================
+
+UPDATE missoes
+SET ativa = FALSE;
+
+
+-- =========================================
+-- NOVAS MISSÕES DO CARDVERSE
+-- =========================================
+
+INSERT INTO missoes
+(
+    nome,
+    descricao,
+    icone,
+    tipo,
+    criterio,
+    quantidade_necessaria,
+    recompensa_moedas,
+    recompensa_pontos,
+    recompensa_xp,
+    ativa
+)
+VALUES
+
+(
+    'Comprador Diário I',
+    'Compre 1 pacote durante o dia.',
+    'bi bi-bag-check',
+    'diaria',
+    'comprar_pacotes',
+    1,
+    15,
+    2,
+    8,
+    TRUE
+),
+
+(
+    'Comprador Diário II',
+    'Compre 2 pacotes durante o dia.',
+    'bi bi-bag-check-fill',
+    'diaria',
+    'comprar_pacotes',
+    2,
+    25,
+    4,
+    12,
+    TRUE
+),
+
+(
+    'Comprador Diário III',
+    'Compre 3 pacotes durante o dia.',
+    'bi bi-basket2',
+    'diaria',
+    'comprar_pacotes',
+    3,
+    40,
+    6,
+    18,
+    TRUE
+),
+
+(
+    'Primeira Abertura',
+    'Abra 1 pacote durante o dia.',
+    'bi bi-box-open',
+    'diaria',
+    'abrir_pacotes',
+    1,
+    10,
+    2,
+    8,
+    TRUE
+),
+
+(
+    'Explorador Diário',
+    'Abra 2 pacotes durante o dia.',
+    'bi bi-box-seam',
+    'diaria',
+    'abrir_pacotes',
+    2,
+    20,
+    4,
+    12,
+    TRUE
+),
+
+(
+    'Maratona Diária',
+    'Abra 3 pacotes durante o dia.',
+    'bi bi-boxes',
+    'diaria',
+    'abrir_pacotes',
+    3,
+    30,
+    6,
+    18,
+    TRUE
+),
+
+(
+    'Resgate Diário',
+    'Resgate sua recompensa diária.',
+    'bi bi-calendar-check',
+    'diaria',
+    'resgatar_diario',
+    1,
+    15,
+    2,
+    8,
+    FALSE
+),
+(
+    'Ritmo de Compras',
+    'Compre 15 pacotes durante a semana.',
+    'bi bi-bag-check',
+    'semanal',
+    'comprar_pacotes',
+    15,
+    180,
+    25,
+    90,
+    TRUE
+),
+
+(
+    'Comprador Persistente',
+    'Compre 25 pacotes durante a semana.',
+    'bi bi-bag-check-fill',
+    'semanal',
+    'comprar_pacotes',
+    25,
+    300,
+    40,
+    150,
+    TRUE
+),
+
+(
+    'Investidor Semanal',
+    'Compre 50 pacotes durante a semana.',
+    'bi bi-cart-check',
+    'semanal',
+    'comprar_pacotes',
+    50,
+    550,
+    75,
+    260,
+    TRUE
+),
+
+(
+    'Magnata Semanal',
+    'Compre 100 pacotes durante a semana.',
+    'bi bi-gem',
+    'semanal',
+    'comprar_pacotes',
+    100,
+    1000,
+    120,
+    420,
+    TRUE
+),
+(
+    'Ritmo de Aberturas',
+    'Abra 15 pacotes durante a semana.',
+    'bi bi-box-seam',
+    'semanal',
+    'abrir_pacotes',
+    15,
+    130,
+    20,
+    75,
+    TRUE
+),
+
+(
+    'Maratona de Aberturas',
+    'Abra 25 pacotes durante a semana.',
+    'bi bi-boxes',
+    'semanal',
+    'abrir_pacotes',
+    25,
+    220,
+    35,
+    130,
+    TRUE
+),
+
+(
+    'Mestre das Aberturas',
+    'Abra 50 pacotes durante a semana.',
+    'bi bi-box2-heart',
+    'semanal',
+    'abrir_pacotes',
+    50,
+    400,
+    60,
+    220,
+    TRUE
+),
+
+(
+    'Lenda das Aberturas',
+    'Abra 100 pacotes durante a semana.',
+    'bi bi-stars',
+    'semanal',
+    'abrir_pacotes',
+    100,
+    750,
+    100,
+    380,
+    TRUE
+),
+(
+    'Presença Semanal',
+    'Resgate recompensas diárias em 3 dias diferentes.',
+    'bi bi-calendar-week',
+    'semanal',
+    'resgatar_diario',
+    3,
+    120,
+    20,
+    80,
+    FALSE
+),
+
+(
+    'Presença Constante',
+    'Resgate recompensas diárias em 5 dias diferentes.',
+    'bi bi-calendar-check',
+    'semanal',
+    'resgatar_diario',
+    5,
+    200,
+    35,
+    140,
+    FALSE
+),
+
+(
+    'Presença Perfeita',
+    'Resgate recompensas diárias em 7 dias diferentes.',
+    'bi bi-calendar-check-fill',
+    'semanal',
+    'resgatar_diario',
+    7,
+    300,
+    55,
+    210,
+    FALSE
 );

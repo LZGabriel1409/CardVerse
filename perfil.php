@@ -11,6 +11,7 @@ $usuarios = new Usuario($pdo);
 $cartasModel = new Carta($pdo);
 $conquistasModel = new Conquista($pdo);
 $rankingModel = new Ranking($pdo);
+$missaoModel = new Missao($pdo);
 
 $usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
 $usuarioId = (int)$_SESSION['usuario_id'];
@@ -111,6 +112,17 @@ $avatar = !empty($usuario['avatar'])
     //
 
     $posicaoAtual = $rankingModel->buscarPosicao($usuarioId);
+
+
+    //
+    // Missoes
+    //
+
+    $missoesDiarias = $missaoModel->listarDiarias($usuarioId);
+    $missoesSemanais = $missaoModel->listarSemanais($usuarioId);
+
+    // $missaoModel->registrarProgresso($usuarioId, 'comprar_pacotes');
+    // $missaoModel->registrarProgresso($usuarioId, 'abrir_pacotes');
 
 ?>
 
@@ -437,48 +449,551 @@ $avatar = !empty($usuario['avatar'])
 
 
     <!-- Missões -->
-    <!-- <section class="mb-4">
+    
 
-        <h2 class="section-title h4 mb-3">Missões Diarias</h2>
+<!-- ========================================= -->
+<!-- MISSÕES DIÁRIAS -->
+<!-- ========================================= -->
 
-        <div class="profile-panel activity-list">
+<section class="mb-4" id="missoes">
 
-            <div class="activity-item">
-                <span class="activity-icon gold">
-                    <i class="bi bi-gem"></i>
-                </span>
-                <div class="activity-content">
-                    <strong>Nova carta rara descoberta</strong>
-                    <span>Você adicionou uma carta à sua coleção.</span>
-                </div>
-                <span class="activity-date">Hoje</span>
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+        <h2 class="section-title h4 mb-0">
+            <i class="bi bi-calendar-check me-2"></i>
+            Missões Diárias
+        </h2>
+
+        <span class="badge bg-success">
+            <i class="bi bi-arrow-repeat me-1"></i>
+            Renovam diariamente
+        </span>
+
+    </div>
+
+
+    <div class="profile-panel activity-list">
+
+        <?php if (empty($missoesDiarias)): ?>
+
+            <div class="text-center py-4">
+
+                <i class="bi bi-calendar-x fs-2 text-secondary"></i>
+
+                <p class="mb-0 mt-2 text-secondary">
+                    Nenhuma missão diária disponível no momento.
+                </p>
+
             </div>
 
-            <div class="activity-item">
-                <span class="activity-icon purple">
-                    <i class="bi bi-box-seam"></i>
-                </span>
-                <div class="activity-content">
-                    <strong>Pacote aberto</strong>
-                    <span>Você realizou uma nova abertura.</span>
+        <?php else: ?>
+
+            <?php foreach ($missoesDiarias as $missao): ?>
+
+                <?php
+
+                    // Quantidade necessária para completar a missão
+                    $necessaria = max(
+                        1,
+                        (int)$missao['quantidade_necessaria']
+                    );
+
+                    // Progresso atual, limitado ao objetivo
+                    $progresso = min(
+                        (int)$missao['progresso'],
+                        $necessaria
+                    );
+
+                    // Calcula a porcentagem de conclusão
+                    $porcentagem = (int) round(
+                        ($progresso / $necessaria) * 100
+                    );
+
+                    // Verifica se a missão foi concluída
+                    $concluida = !empty($missao['concluida_em']);
+
+                    // Verifica se a recompensa já foi resgatada
+                    $resgatada = !empty($missao['resgatada_em']);
+
+                    // Ícone padrão caso não exista um cadastrado
+                    $icone = !empty($missao['icone'])
+                        ? $missao['icone']
+                        : 'bi bi-flag';
+
+                ?>
+
+                <div class="activity-item align-items-start">
+
+                    <!-- Ícone da missão -->
+                    <span class="activity-icon purple">
+
+                        <i class="<?= htmlspecialchars($icone, ENT_QUOTES, 'UTF-8') ?>"></i>
+
+                    </span>
+
+
+                    <!-- Conteúdo da missão -->
+                    <div class="activity-content flex-grow-1">
+
+                        <!-- Nome e status -->
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+                            <strong>
+                                <?= htmlspecialchars($missao['nome'], ENT_QUOTES, 'UTF-8') ?>
+                            </strong>
+
+
+                            <?php if ($resgatada): ?>
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Resgatada
+                                </span>
+
+                            <?php elseif ($concluida): ?>
+
+                                <span class="badge bg-warning text-dark">
+                                    Concluída
+                                </span>
+
+                            <?php else: ?>
+
+                                <span class="badge bg-secondary">
+                                    Em andamento
+                                </span>
+
+                            <?php endif; ?>
+
+                        </div>
+
+
+                        <!-- Descrição -->
+                        <span>
+                            <?= htmlspecialchars($missao['descricao'], ENT_QUOTES, 'UTF-8') ?>
+                        </span>
+
+
+                        <!-- Progresso -->
+                        <div class="d-flex justify-content-between mt-3 mb-1">
+
+                            <small class="text-secondary">
+                                Progresso
+                            </small>
+
+                            <small class="fw-semibold">
+                                <?= $progresso ?>/<?= $necessaria ?>
+                                (<?= $porcentagem ?>%)
+                            </small>
+
+                        </div>
+
+
+                        <!-- Barra de progresso -->
+                        <div
+                            class="progress"
+                            style="height: 8px;"
+                            role="progressbar"
+                            aria-valuenow="<?= $porcentagem ?>"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        >
+
+                            <div
+                                class="progress-bar <?= $concluida ? 'bg-success' : '' ?>"
+                                style="width: <?= $porcentagem ?>%;"
+                            ></div>
+
+                        </div>
+
+
+                        <!-- Recompensas -->
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+
+                            <?php if ((int)$missao['recompensa_moedas'] > 0): ?>
+
+                                <span class="badge bg-warning text-dark">
+
+                                    <i class="bi bi-coin me-1"></i>
+
+                                    +<?= (int)$missao['recompensa_moedas'] ?> moedas
+
+                                </span>
+
+                            <?php endif; ?>
+
+
+                            <?php if ((int)$missao['recompensa_pontos'] > 0): ?>
+
+                                <span class="badge bg-primary">
+
+                                    <i class="bi bi-star me-1"></i>
+
+                                    +<?= (int)$missao['recompensa_pontos'] ?> pontos
+
+                                </span>
+
+                            <?php endif; ?>
+
+
+                            <?php if ((int)$missao['recompensa_xp'] > 0): ?>
+
+                                <span class="badge bg-info text-dark">
+
+                                    <i class="bi bi-lightning-charge me-1"></i>
+
+                                    +<?= (int)$missao['recompensa_xp'] ?> XP
+
+                                </span>
+
+                            <?php endif; ?>
+
+                        </div>
+
+
+                        <!-- Botão de resgate -->
+                        <?php if ($resgatada): ?>
+
+                            <div class="mt-3">
+
+                                <span class="badge bg-success">
+
+                                    <i class="bi bi-gift me-1"></i>
+
+                                    Recompensa recebida!
+
+                                </span>
+
+                            </div>
+
+                        <?php elseif ($concluida): ?>
+
+                            <form
+                                action="actions/resgatar-missao.php"
+                                method="POST"
+                                class="mt-3"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="csrf_token"
+                                    value="<?= htmlspecialchars(tokenCsrf(), ENT_QUOTES, 'UTF-8') ?>"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="usuario_missao_id"
+                                    value="<?= (int)$missao['usuario_missao_id'] ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-sm"
+                                >
+
+                                    <i class="bi bi-gift me-1"></i>
+
+                                    Resgatar recompensa
+
+                                </button>
+
+                            </form>
+
+                        <?php endif; ?>
+
+                    </div>
+
                 </div>
-                <span class="activity-date">Ontem</span>
+
+            <?php endforeach; ?>
+
+        <?php endif; ?>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================= -->
+<!-- MISSÕES SEMANAIS -->
+<!-- ========================================= -->
+
+<section class="mb-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+        <h2 class="section-title h4 mb-0">
+
+            <i class="bi bi-calendar-week me-2"></i>
+
+            Missões Semanais
+
+        </h2>
+
+        <span class="badge bg-primary">
+
+            <i class="bi bi-arrow-repeat me-1"></i>
+
+            Renovam semanalmente
+
+        </span>
+
+    </div>
+
+
+    <div class="profile-panel activity-list">
+
+        <?php if (empty($missoesSemanais)): ?>
+
+            <div class="text-center py-4">
+
+                <i class="bi bi-calendar-x fs-2 text-secondary"></i>
+
+                <p class="mb-0 mt-2 text-secondary">
+
+                    Nenhuma missão semanal disponível no momento.
+
+                </p>
+
             </div>
 
-            <div class="activity-item">
-                <span class="activity-icon gold">
-                    <i class="bi bi-trophy"></i>
-                </span>
-                <div class="activity-content">
-                    <strong>Conquista desbloqueada</strong>
-                    <span>Você concluiu uma nova conquista.</span>
+        <?php else: ?>
+
+            <?php foreach ($missoesSemanais as $missao): ?>
+
+                <?php
+
+                    // Quantidade necessária para completar a missão
+                    $necessaria = max(
+                        1,
+                        (int)$missao['quantidade_necessaria']
+                    );
+
+                    // Progresso atual, limitado ao objetivo
+                    $progresso = min(
+                        (int)$missao['progresso'],
+                        $necessaria
+                    );
+
+                    // Calcula a porcentagem de conclusão
+                    $porcentagem = (int) round(
+                        ($progresso / $necessaria) * 100
+                    );
+
+                    // Verifica se a missão foi concluída
+                    $concluida = !empty($missao['concluida_em']);
+
+                    // Verifica se a recompensa já foi resgatada
+                    $resgatada = !empty($missao['resgatada_em']);
+
+                    // Ícone padrão caso não exista um cadastrado
+                    $icone = !empty($missao['icone'])
+                        ? $missao['icone']
+                        : 'bi bi-flag';
+
+                ?>
+
+                <div class="activity-item align-items-start">
+
+                    <!-- Ícone da missão -->
+                    <span class="activity-icon gold">
+
+                        <i class="<?= htmlspecialchars($icone, ENT_QUOTES, 'UTF-8') ?>"></i>
+
+                    </span>
+
+
+                    <!-- Conteúdo da missão -->
+                    <div class="activity-content flex-grow-1">
+
+                        <!-- Nome e status -->
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+                            <strong>
+                                <?= htmlspecialchars($missao['nome'], ENT_QUOTES, 'UTF-8') ?>
+                            </strong>
+
+
+                            <?php if ($resgatada): ?>
+
+                                <span class="badge bg-success">
+
+                                    <i class="bi bi-check-circle me-1"></i>
+
+                                    Resgatada
+
+                                </span>
+
+                            <?php elseif ($concluida): ?>
+
+                                <span class="badge bg-warning text-dark">
+
+                                    Concluída
+
+                                </span>
+
+                            <?php else: ?>
+
+                                <span class="badge bg-secondary">
+
+                                    Em andamento
+
+                                </span>
+
+                            <?php endif; ?>
+
+                        </div>
+
+
+                        <!-- Descrição -->
+                        <span>
+                            <?= htmlspecialchars($missao['descricao'], ENT_QUOTES, 'UTF-8') ?>
+                        </span>
+
+
+                        <!-- Progresso -->
+                        <div class="d-flex justify-content-between mt-3 mb-1">
+
+                            <small class="text-secondary">
+                                Progresso
+                            </small>
+
+                            <small class="fw-semibold">
+
+                                <?= $progresso ?>/<?= $necessaria ?>
+
+                                (<?= $porcentagem ?>%)
+
+                            </small>
+
+                        </div>
+
+
+                        <!-- Barra de progresso -->
+                        <div
+                            class="progress"
+                            style="height: 8px;"
+                            role="progressbar"
+                            aria-valuenow="<?= $porcentagem ?>"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        >
+
+                            <div
+                                class="progress-bar <?= $concluida ? 'bg-success' : '' ?>"
+                                style="width: <?= $porcentagem ?>%;"
+                            ></div>
+
+                        </div>
+
+
+                        <!-- Recompensas -->
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+
+                            <?php if ((int)$missao['recompensa_moedas'] > 0): ?>
+
+                                <span class="badge bg-warning text-dark">
+
+                                    <i class="bi bi-coin me-1"></i>
+
+                                    +<?= (int)$missao['recompensa_moedas'] ?> moedas
+
+                                </span>
+
+                            <?php endif; ?>
+
+
+                            <?php if ((int)$missao['recompensa_pontos'] > 0): ?>
+
+                                <span class="badge bg-primary">
+
+                                    <i class="bi bi-star me-1"></i>
+
+                                    +<?= (int)$missao['recompensa_pontos'] ?> pontos
+
+                                </span>
+
+                            <?php endif; ?>
+
+
+                            <?php if ((int)$missao['recompensa_xp'] > 0): ?>
+
+                                <span class="badge bg-info text-dark">
+
+                                    <i class="bi bi-lightning-charge me-1"></i>
+
+                                    +<?= (int)$missao['recompensa_xp'] ?> XP
+
+                                </span>
+
+                            <?php endif; ?>
+
+                        </div>
+
+
+                        <!-- Botão de resgate -->
+                        <?php if ($resgatada): ?>
+
+                            <div class="mt-3">
+
+                                <span class="badge bg-success">
+
+                                    <i class="bi bi-gift me-1"></i>
+
+                                    Recompensa recebida!
+
+                                </span>
+
+                            </div>
+
+                        <?php elseif ($concluida): ?>
+
+                            <form
+                                action="actions/resgatar-missao.php"
+                                method="POST"
+                                class="mt-3"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="csrf_token"
+                                    value="<?= htmlspecialchars(tokenCsrf(), ENT_QUOTES, 'UTF-8') ?>"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="usuario_missao_id"
+                                    value="<?= (int)$missao['usuario_missao_id'] ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-sm"
+                                >
+
+                                    <i class="bi bi-gift me-1"></i>
+
+                                    Resgatar recompensa
+
+                                </button>
+
+                            </form>
+
+                        <?php endif; ?>
+
+                    </div>
+
                 </div>
-                <span class="activity-date">Há 2 dias</span>
-            </div>
 
-        </div>
+            <?php endforeach; ?>
 
-    </section> -->
+        <?php endif; ?>
+
+    </div>
+
+</section>
+
+
 
 </main>
 

@@ -41,9 +41,35 @@ if ($tokenSessao === '' || $tokenRecebido === '' || !hash_equals($tokenSessao, $
 }
 
 $aberturasModel = new Abertura($pdo);
+$missaoModel = new Missao($pdo);
 
 try {
     $resultado = $aberturasModel->abrir($usuarioId, $compraId, $tokenRecebido);
+
+
+    // Atualiza o progresso das missões após a abertura
+    try {
+
+        // Garante que o jogador tenha recebido as missões atuais
+        $missaoModel->listarDiarias($usuarioId);
+        $missaoModel->listarSemanais($usuarioId);
+
+        // Contabiliza uma abertura de pacote
+        $missaoModel->registrarProgresso(
+            $usuarioId,
+            'abrir_pacotes',
+            1
+        );
+
+    } catch (Throwable $e) {
+
+        error_log(
+            'Erro ao atualizar missões após abertura: '
+            . $e->getMessage()
+        );
+
+    }
+
 
     unset($tokens[$compraId]);
     $_SESSION['abertura_tokens'] = $tokens;

@@ -437,9 +437,9 @@ $avatar = !empty($usuario['avatar'])
         </div>
 
         <div class="text-center mt-4">
-            <a href="conquistas.php" class="btn btn-outline-game">
+            <a href="" class="btn btn-outline-game">
                 <i class="bi bi-trophy me-2"></i>
-                Ver todas as conquistas
+                Ver todas as conquistas (em breve)
                 <i class="bi bi-arrow-right ms-2"></i>
             </a>
         </div>

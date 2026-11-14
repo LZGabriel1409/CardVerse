@@ -110,4 +110,87 @@ class Usuario
 
         return $usuario;
     }
+
+    //verificar se o proximo nivel existe no banco
+    
+    // Verifica se existem níveis suficientes para a experiência do jogador
+    public function verificarNivel(int $xp): void
+    {
+        if ($xp < 0) {
+            return;
+        }
+
+        // Verifica se já existem níveis cadastrados
+        $stmt = $this->pdo->query("
+            SELECT nivel, experiencia_necessaria
+            FROM niveis
+            ORDER BY nivel DESC
+            LIMIT 1
+        ");
+
+        $ultimoNivel = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        // Caso a tabela esteja vazia, cria o nível inicial
+        if (!$ultimoNivel) {
+
+            $this->pdo->exec("
+                INSERT IGNORE INTO niveis
+                (nivel, experiencia_necessaria)
+                VALUES (1, 0)
+            ");
+
+        }
+
+
+        // Continua criando níveis enquanto o jogador
+        // alcançar o último nível disponível
+        while (true) {
+
+            // Busca novamente o último nível cadastrado
+            $stmt = $this->pdo->query("
+                SELECT nivel, experiencia_necessaria
+                FROM niveis
+                ORDER BY nivel DESC
+                LIMIT 1
+            ");
+
+            $ultimoNivel = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $nivelAtual = (int) $ultimoNivel['nivel'];
+
+            $expAnterior = (int) $ultimoNivel['experiencia_necessaria'];
+
+
+            // Se o jogador ainda não alcançou o último nível,
+            // não precisamos criar outro
+            if ($xp < $expAnterior) {
+                break;
+            }
+
+
+            // Calcula os dados do próximo nível
+            $novoNivel = $nivelAtual + 1;
+
+            $novaExpNecessaria = max(
+                $expAnterior + 1,
+                (int) round(($expAnterior * 1.25) + 100)
+            );
+
+
+            // Insere o novo nível no banco
+            $insert = $this->pdo->prepare("
+                INSERT IGNORE INTO niveis
+                (nivel, experiencia_necessaria)
+                VALUES (?, ?)
+            ");
+
+            $insert->execute([
+                $novoNivel,
+                $novaExpNecessaria
+            ]);
+
+        }
+    }
+
 }

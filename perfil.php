@@ -34,6 +34,8 @@ $avatar = !empty($usuario['avatar'])
     $xp = (int)$usuario['experiencia'];
     $pontosAtuais = (int)$usuario['pontos'];
 
+    $usuarios->verificarNivel($xp);
+
     $stmt = $pdo->query("
     SELECT nivel, experiencia_necessaria FROM niveis
     ORDER BY experiencia_necessaria ASC");
@@ -157,6 +159,8 @@ $avatar = !empty($usuario['avatar'])
                 >
                 <span class="profile-online" title="Jogador"></span>
             </div>
+
+            
 
             <div class="profile-identity">
                 <div class="eyebrow mb-2">

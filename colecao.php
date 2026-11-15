@@ -12,10 +12,7 @@ $cartasModel = new Carta($pdo);
 // Dados do jogador autenticado
 $usuario = $usuarios->buscarPorId($usuarioId);
 
-if (!$usuario) {
-    header('Location: logout.php');
-    exit;
-}
+exigirSessaoValida($usuario);
 
 // Raridades disponíveis no jogo
 $raridades = Carta::RARIDADES;

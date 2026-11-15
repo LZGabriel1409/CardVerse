@@ -2,8 +2,18 @@
 require_once __DIR__ . '/config/auth.php';
 
 if (usuarioLogado()) {
-    header('Location: dashboard.php');
-    exit;
+    require_once __DIR__ . '/config/conexao.php';
+    require_once __DIR__ . '/classes/autoload.php';
+
+    $usuariosSessao = new Usuario($pdo);
+
+    if ($usuariosSessao->buscarPorId((int)$_SESSION['usuario_id'])) {
+        header('Location: dashboard.php');
+        exit;
+    }
+
+    // Sessão órfã: o usuário da sessão não existe mais no banco.
+    limparSessaoUsuario();
 }
 
 $flash = pegarMensagem();

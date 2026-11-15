@@ -12,10 +12,7 @@ $aberturasModel = new Abertura($pdo);
 // Dados do jogador autenticado
 $usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
 
-if (!$usuario) {
-    header('Location: logout.php');
-    exit;
-}
+exigirSessaoValida($usuario);
 
 // Estatísticas da coleção
 $colecao = $cartas->resumoColecao((int)$_SESSION['usuario_id']);

@@ -4,14 +4,67 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 function usuarioLogado(): bool {
-    return isset($_SESSION['usuario_id']);
+    return isset($_SESSION['usuario_id']) && (int)$_SESSION['usuario_id'] > 0;
 }
 
-function exigirLogin(): void {
+function exigirLogin(string $destino = 'login.php'): void {
     if (!usuarioLogado()) {
-        header("Location: $destino");
+        header('Location: ' . $destino);
         exit;
     }
+}
+
+/**
+ * Descarta os dados de autenticação da sessão, preservando o restante
+ * (flash, CSRF e tokens de uso único). Usado quando o usuário da sessão
+ * não existe mais no banco.
+ */
+function limparSessaoUsuario(): void {
+    unset($_SESSION['usuario_id'], $_SESSION['usuario_nome']);
+
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_regenerate_id(true);
+    }
+}
+
+/**
+ * Encerra a sessão por completo, incluindo o cookie do navegador.
+ */
+function encerrarSessao(): void {
+    $_SESSION = [];
+
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
+    }
+
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_destroy();
+    }
+}
+
+/**
+ * Garante que a sessão aponta para um usuário existente.
+ * Sessões órfãs (usuário removido do banco) são encerradas aqui,
+ * sem passar por logout.php.
+ */
+function exigirSessaoValida(?array $usuario, string $destino = 'login.php'): void {
+    if ($usuario !== null) {
+        return;
+    }
+
+    limparSessaoUsuario();
+    mensagem('warning', 'Sua sessão expirou. Entre novamente para continuar.');
+    header('Location: ' . $destino);
+    exit;
 }
 
 function usuarioAdmin(PDO $pdo): bool {

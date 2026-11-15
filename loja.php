@@ -13,10 +13,7 @@ $aberturasModel = new Abertura($pdo);
 // Dados do jogador autenticado
 $usuario = $usuarios->buscarPorId($usuarioId);
 
-if (!$usuario) {
-    header('Location: logout.php');
-    exit;
-}
+exigirSessaoValida($usuario);
 
 $saldo = (int)$usuario['moedas'];
 

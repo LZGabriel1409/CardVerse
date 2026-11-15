@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/config/auth.php';
 exigirLogin();
@@ -16,10 +15,7 @@ $missaoModel = new Missao($pdo);
 $usuario = $usuarios->buscarPorId((int)$_SESSION['usuario_id']);
 $usuarioId = (int)$_SESSION['usuario_id'];
 
-if (!$usuario) {
-    header('Location: logout.php');
-    exit;
-}
+exigirSessaoValida($usuario);
 
 // Foto de perfil: usa a padrão caso o usuário ainda não tenha uma.
 $avatar = !empty($usuario['avatar'])

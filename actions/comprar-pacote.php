@@ -95,8 +95,9 @@ try {
             mensagem('warning', $e->getMessage());
             break;
         case LojaException::USUARIO_INEXISTENTE:
-            mensagem('danger', $e->getMessage());
-            header('Location: ../logout.php');
+            limparSessaoUsuario();
+            mensagem('warning', 'Sua sessão expirou. Entre novamente para continuar.');
+            header('Location: ../login.php');
             exit;
         default:
             error_log(

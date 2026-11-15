@@ -11,10 +11,7 @@ $aberturasModel = new Abertura($pdo);
 
 $usuario = $usuarios->buscarPorId($usuarioId);
 
-if (!$usuario) {
-    header('Location: logout.php');
-    exit;
-}
+exigirSessaoValida($usuario);
 
 $saldo = (int)$usuario['moedas'];
 

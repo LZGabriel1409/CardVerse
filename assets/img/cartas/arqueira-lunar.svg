@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Arqueira Lunar</title>
+  <desc id="desc">Arqueira encapuzada disparando uma flecha luminosa sob a lua.</desc>
+  <defs>
+    <radialGradient id="bg">
+      <stop stop-color="#293363"/>
+      <stop offset="1" stop-color="#090d22"/>
+    </radialGradient>
+    <linearGradient id="cloak" x2="1" y2="1">
+      <stop stop-color="#5869a7"/>
+      <stop offset="1" stop-color="#171d43"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="284" cy="93" r="55" fill="#e4edff"/>
+  <circle cx="307" cy="76" r="55" fill="#202951"/>
+  <g fill="#d7e6ff">
+    <circle cx="58" cy="66" r="2"/><circle cx="121" cy="42" r="3"/>
+    <circle cx="191" cy="80" r="2"/><circle cx="348" cy="158" r="2"/>
+    <path d="M74 137l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+    <path d="M223 37l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>
+  </g>
+
+  <!-- Capa e corpo -->
+  <path d="M61 376q14-127 92-165 14-45 51-58 49 11 59 62 40 55 50 161z" fill="url(#cloak)"/>
+  <path d="M126 190q3-100 78-105 69 24 50 117l-42 39-61-17z" fill="#252d5a" stroke="#7584bf" stroke-width="5"/>
+  <path d="M159 139q10-33 43-29 32 8 29 45l-17 43-37 1-22-29z" fill="#d6af96"/>
+  <path d="M155 147q8-51 50-45 37 7 37 52-18-10-29-31-19 23-58 24z" fill="#11172f"/>
+  <path d="M177 157l12-2M211 155l10 2" stroke="#bcecff" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M183 184q14 8 27-1" fill="none" stroke="#8c5f5c" stroke-width="3"/>
+  <path d="M151 217q50 34 101-3l-20 54-38 18-38-29z" fill="#303b70"/>
+
+  <!-- Arco -->
+  <path d="M297 81q-88 119 5 264" fill="none" stroke="#b48a59" stroke-width="11" stroke-linecap="round"/>
+  <path d="M297 81l-15 132 20 132" fill="none" stroke="#d8e5ff" stroke-width="2"/>
+  <path d="M282 213l-105-20" stroke="#d6eaff" stroke-width="4" filter="url(#glow)"/>
+  <path d="M158 181l25 5-13 22z" fill="#eff8ff" filter="url(#glow)"/>
+  <path d="M285 205l18-10M284 215l18 8" stroke="#a8c9ff" stroke-width="4"/>
+
+  <!-- Braços -->
+  <path d="M144 238q44-37 92-38l44-4" fill="none" stroke="#d6af96" stroke-width="17" stroke-linecap="round"/>
+  <path d="M190 282q44-8 93-63" fill="none" stroke="#46558d" stroke-width="28" stroke-linecap="round"/>
+  <path d="M275 220l12-15" stroke="#d6af96" stroke-width="15" stroke-linecap="round"/>
+  <path d="M70 370q116-40 237 0" fill="none" stroke="#8194d0" stroke-width="3" opacity=".4"/>
+</svg>

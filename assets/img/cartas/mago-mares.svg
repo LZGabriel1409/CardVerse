@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Mago das Marés</title>
+  <desc id="desc">Mago controlando correntes de água e uma tempestade.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1">
+      <stop stop-color="#102e50"/>
+      <stop offset="1" stop-color="#061524"/>
+    </linearGradient>
+    <linearGradient id="robe" x2="1" y2="1">
+      <stop stop-color="#197eaa"/>
+      <stop offset="1" stop-color="#152c62"/>
+    </linearGradient>
+    <linearGradient id="water" x2="0" y2="1">
+      <stop stop-color="#a0f4ff"/>
+      <stop offset="1" stop-color="#168dcc"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="200" cy="132" r="106" fill="#28bce8" opacity=".08"/>
+  <path d="M48 80l42 12 28-22 28 29 43-13M263 63l24 17 39-8" fill="none" stroke="#7ab5d1" stroke-width="8" stroke-linecap="round" opacity=".35"/>
+  <path d="M127 91l-15 34 21-6-13 34M294 91l-17 31 20-4-12 30" fill="none" stroke="#a4ecff" stroke-width="4" filter="url(#glow)"/>
+
+  <!-- Cajado -->
+  <path d="M310 118l-20 251" stroke="#6f5948" stroke-width="12" stroke-linecap="round"/>
+  <path d="M311 123q-44-22-17-60 8 29 34 12 20 37-17 48z" fill="none" stroke="#68dcf4" stroke-width="8" filter="url(#glow)"/>
+  <circle cx="311" cy="119" r="12" fill="#c2fbff"/>
+
+  <!-- Mago -->
+  <path d="M115 376l18-137 50-45h45l49 45 17 137z" fill="url(#robe)" stroke="#50a8ca" stroke-width="4"/>
+  <path d="M159 209l-2 84 45 57 43-58-4-82z" fill="#173f70"/>
+  <path d="M200 208v151M151 293l49 57 45-58" fill="none" stroke="#68d5e9" stroke-width="4" opacity=".65"/>
+  <path d="M161 116q3-43 42-42 41 3 39 47l-11 68-32 21-36-25z" fill="#b88b71"/>
+  <path d="M158 126q-4-55 46-57 48 6 40 62l-19-31-20 14-20-16z" fill="#d7e2e4"/>
+  <path d="M164 174q7 78 37 85 37-16 37-86-18 25-34 11-17 18-40-10z" fill="#d7e2e4"/>
+  <path d="M174 139l15-3M211 136l15 3" stroke="#7ef2ff" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- Chapéu -->
+  <path d="M108 105q91-33 184 0-17 29-92 25-75 4-92-25z" fill="#19527d" stroke="#65b5cf" stroke-width="4"/>
+  <path d="M145 100l24-79 82 80q-53 18-106-1z" fill="#1b6790"/>
+  <path d="M169 21q39 17 45 45l-27-13z" fill="#318eb0"/>
+  <path d="M147 82q48 18 94 2" fill="none" stroke="#8bd7dd" stroke-width="8"/>
+
+  <!-- Magia e mar -->
+  <path d="M62 232q-52-65 17-92-31 35 11 50 34 13 51-15" fill="none" stroke="url(#water)" stroke-width="11" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="66" cy="213" r="13" fill="#9ff5ff" opacity=".8"/>
+  <path d="M0 328q50-30 100 0t100 0 100 0 100 0v72H0z" fill="#0c5c89"/>
+  <path d="M0 348q50-30 100 0t100 0 100 0 100 0M0 376q50-30 100 0t100 0 100 0 100 0" fill="none" stroke="#67dced" stroke-width="7" opacity=".75"/>
+</svg>

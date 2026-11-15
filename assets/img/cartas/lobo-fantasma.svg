@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Lobo Fantasma</title>
+  <desc id="desc">Lobo espectral com olhos luminosos em uma floresta encantada.</desc>
+  <defs>
+    <radialGradient id="bg">
+      <stop stop-color="#27455a"/>
+      <stop offset="1" stop-color="#08151e"/>
+    </radialGradient>
+    <linearGradient id="wolf" x2="0" y2="1">
+      <stop stop-color="#c0e5e8"/>
+      <stop offset=".5" stop-color="#6297aa"/>
+      <stop offset="1" stop-color="#294f67"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="200" cy="128" r="91" fill="#c7f4ec" opacity=".14"/>
+  <circle cx="200" cy="128" r="66" fill="#c7f4ec" opacity=".1"/>
+  <g fill="#102b31">
+    <path d="M28 400V76h16v324zM14 147l22-80 22 80zM4 210l32-98 32 98z"/>
+    <path d="M340 400V54h17v346zM318 132l30-96 30 96zM310 208l38-116 38 116z"/>
+    <path d="M86 400V139h11v261zM68 202l23-77 24 77zM304 400V155h10v245zM286 218l24-79 23 79z"/>
+  </g>
+
+  <!-- Aura -->
+  <path d="M82 324q-42-38 9-71-26-30 13-57M320 323q42-39-8-72 26-30-14-56" fill="none" stroke="#69d8d3" stroke-width="6" stroke-linecap="round" opacity=".55" filter="url(#glow)"/>
+
+  <!-- Lobo -->
+  <path d="M102 114l63 38q35-17 70 0l63-38-14 100 25 63-50 85-59 38-59-38-50-85 25-63z" fill="url(#wolf)" stroke="#a4d8db" stroke-width="4"/>
+  <path d="M111 137l45 35-37 39zM289 137l-45 35 37 39z" fill="#294f66"/>
+  <path d="M200 151l-43 65 12 99 31 61 31-61 12-99z" fill="#a6ced2" opacity=".52"/>
+  <path d="M124 214l58 19-25 35-43-18zM276 214l-58 19 25 35 43-18z" fill="#183848"/>
+  <path d="M139 229l32 8-19 15zM261 229l-32 8 19 15z" fill="#a5fff1" filter="url(#glow)"/>
+  <path d="M173 291l27-14 27 14-27 29z" fill="#152c3b"/>
+  <path d="M200 319v20M200 339l-27 10M200 339l27 10" fill="none" stroke="#24485b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M115 277l-39 22 49 8-24 34 55-11M285 277l39 22-49 8 24 34-55-11" fill="#568b9d"/>
+
+  <!-- Espíritos -->
+  <g fill="#9cf7e8" filter="url(#glow)">
+    <circle cx="72" cy="113" r="4"/><circle cx="326" cy="104" r="5"/>
+    <circle cx="54" cy="186" r="3"/><circle cx="344" cy="191" r="3"/>
+    <path d="M76 65l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+    <path d="M326 280l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+  </g>
+  <path d="M0 379q95-30 200 0t200 0v21H0z" fill="#4e9a9b" opacity=".2"/>
+</svg>

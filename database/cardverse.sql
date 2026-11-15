@@ -656,3 +656,7 @@ VALUES
     210,
     FALSE
 );
+
+UPDATE cartas
+SET imagem = REPLACE(imagem, '.png', '.svg')
+WHERE imagem LIKE '%.png';

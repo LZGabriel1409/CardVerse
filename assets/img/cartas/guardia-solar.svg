@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Guardiã Solar</title>
+  <desc id="desc">Guardiã com armadura dourada, lança e escudo de energia solar.</desc>
+  <defs>
+    <radialGradient id="bg">
+      <stop stop-color="#755024"/>
+      <stop offset=".55" stop-color="#342c34"/>
+      <stop offset="1" stop-color="#171925"/>
+    </radialGradient>
+    <linearGradient id="gold" x2="1" y2="1">
+      <stop stop-color="#fff1a6"/>
+      <stop offset=".45" stop-color="#e2aa3e"/>
+      <stop offset="1" stop-color="#80521f"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <g stroke="#ffd66b" stroke-width="5" opacity=".35">
+    <path d="M200 17v34M200 249v34M84 133H50M350 133h-34M118 51l24 24M282 215l24 24M282 51l-24 24M118 215l-24 24"/>
+  </g>
+  <circle cx="200" cy="133" r="82" fill="#ffc857" opacity=".13"/>
+  <circle cx="200" cy="133" r="58" fill="#ffdc77" opacity=".2" filter="url(#glow)"/>
+
+  <!-- Lança -->
+  <path d="M319 63l-43 320" stroke="#9a6b31" stroke-width="11"/>
+  <path d="M321 31l18 42-24 30-17-32z" fill="url(#gold)" stroke="#ffe8a0" stroke-width="3"/>
+  <path d="M320 42l-4 42" stroke="#fff4bd" stroke-width="3"/>
+
+  <!-- Corpo -->
+  <path d="M109 378l17-127q5-44 49-56h51q44 12 49 56l17 127z" fill="#e4ddd0" stroke="#8c642d" stroke-width="5"/>
+  <path d="M152 203l48 43 48-43 23 126-71 51-71-51z" fill="url(#gold)"/>
+  <path d="M200 247v117M153 206l47 41 47-41" fill="none" stroke="#fff1b0" stroke-width="4" opacity=".65"/>
+  <path d="M121 242q-32 13-36 57l40 19 37-63zM279 242q28 9 34 39l-27 28-36-56z" fill="url(#gold)" stroke="#8c642d" stroke-width="5"/>
+
+  <!-- Cabeça e elmo -->
+  <path d="M158 111q2-47 43-47 42 2 42 49l-10 70-33 25-35-25z" fill="#a97050"/>
+  <path d="M151 125l4-55 45-42 46 42 4 55-26-27-24 12-24-12z" fill="url(#gold)" stroke="#ffe499" stroke-width="4"/>
+  <path d="M200 29V12M180 37l-9-19M220 37l9-19" stroke="#ffdc73" stroke-width="7" stroke-linecap="round"/>
+  <path d="M151 125l18-11 5 63-25-20zM249 125l-18-11-5 63 25-20z" fill="#b87c2d"/>
+  <path d="M174 136l14-3M211 133l14 3" stroke="#fff2a6" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- Escudo -->
+  <path d="M75 221q70-22 137 5v70q-4 64-70 91-65-28-67-91z" fill="#ad7229" stroke="#ffe29a" stroke-width="7"/>
+  <path d="M89 237q53-15 107 4v53q-3 48-54 72-50-24-53-72z" fill="#293343"/>
+  <circle cx="142" cy="291" r="28" fill="#ffd66b" filter="url(#glow)"/>
+  <g stroke="#ffd66b" stroke-width="6" stroke-linecap="round">
+    <path d="M142 247v13M142 322v13M98 291h13M173 291h13M111 260l9 9M164 313l9 9M173 260l-9 9M120 313l-9 9"/>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Cavaleiro de Ferro</title>
+  <desc id="desc">Cavaleiro com armadura de ferro, espada e escudo.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1">
+      <stop stop-color="#18263b"/>
+      <stop offset="1" stop-color="#080d16"/>
+    </linearGradient>
+    <linearGradient id="steel" x2="1" y2="1">
+      <stop stop-color="#e2e9ef"/>
+      <stop offset=".45" stop-color="#8191a1"/>
+      <stop offset="1" stop-color="#354354"/>
+    </linearGradient>
+    <linearGradient id="shield" x2="0" y2="1">
+      <stop stop-color="#607b98"/>
+      <stop offset="1" stop-color="#243548"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="200" cy="156" r="118" fill="#8ca4bc" opacity=".08"/>
+  <path d="M35 335h330M62 335v-82h35v82m206 0v-82h35v82" fill="none" stroke="#91a0af" stroke-width="5" opacity=".16"/>
+  <path d="M49 253v-22h12v12h13v-12h12v22m204 0v-22h12v12h13v-12h12v22" fill="none" stroke="#91a0af" stroke-width="5" opacity=".16"/>
+
+  <!-- Espada -->
+  <path d="M290 74l13 5-48 183-14-5z" fill="url(#steel)"/>
+  <path d="M292 78l-42 174" stroke="#f4f8fb" stroke-width="3" opacity=".65"/>
+  <path d="M237 249l40 13-5 13-40-13z" fill="#aab6c0"/>
+  <path d="M249 267l-15 42" stroke="#6e4931" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="231" cy="315" r="9" fill="#c2ccd4"/>
+
+  <!-- Armadura -->
+  <path d="M105 363l13-102q8-40 50-48h64q42 8 50 48l13 102z" fill="url(#steel)" stroke="#263444" stroke-width="6"/>
+  <path d="M114 273q-32 4-38 38l25 23 39-30zM286 273q32 4 38 38l-25 23-39-30z" fill="url(#steel)" stroke="#354556" stroke-width="6"/>
+  <path d="M150 213v-69q0-65 50-65t50 65v69l-50 32z" fill="url(#steel)" stroke="#293949" stroke-width="6"/>
+  <path d="M151 142h98l-8 45-41 20-41-20z" fill="#1b2734"/>
+  <path d="M164 151h72M174 165h52" stroke="#91a2b3" stroke-width="6"/>
+  <path d="M200 83v120M178 99q22-15 44 0" fill="none" stroke="#e2e9ef" stroke-width="4" opacity=".65"/>
+  <path d="M183 78l17-39 17 39" fill="#65778a" stroke="#b8c4ce" stroke-width="4"/>
+
+  <!-- Escudo -->
+  <path d="M116 231q84-27 168 0v75q0 65-84 94-84-29-84-94z" fill="url(#shield)" stroke="#bdc8d2" stroke-width="8"/>
+  <path d="M200 231v147M135 272h130" stroke="#9caab8" stroke-width="12"/>
+  <path d="M200 246l12 24 27 4-20 19 5 27-24-13-24 13 5-27-20-19 27-4z" fill="#d7dee4"/>
+</svg>

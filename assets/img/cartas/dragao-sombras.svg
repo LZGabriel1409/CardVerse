@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Dragão das Sombras</title>
+  <desc id="desc">Dragão ancestral de asas abertas diante de um eclipse.</desc>
+  <defs>
+    <radialGradient id="bg">
+      <stop stop-color="#40204f"/>
+      <stop offset=".55" stop-color="#171226"/>
+      <stop offset="1" stop-color="#070811"/>
+    </radialGradient>
+    <linearGradient id="dragon" x2="1" y2="1">
+      <stop stop-color="#634079"/>
+      <stop offset=".45" stop-color="#29203f"/>
+      <stop offset="1" stop-color="#101322"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="200" cy="111" r="72" fill="#bc70e5" opacity=".35" filter="url(#glow)"/>
+  <circle cx="200" cy="111" r="59" fill="#0c0b16"/>
+  <g fill="#a888ce" opacity=".65">
+    <circle cx="57" cy="61" r="2"/><circle cx="337" cy="71" r="2"/>
+    <circle cx="86" cy="150" r="2"/><circle cx="314" cy="161" r="3"/>
+    <circle cx="43" cy="250" r="2"/><circle cx="359" cy="258" r="2"/>
+  </g>
+
+  <!-- Asas -->
+  <path d="M161 183Q100 83 20 77l38 69-43 16 67 43-33 42 102 34z" fill="url(#dragon)" stroke="#76508e" stroke-width="5"/>
+  <path d="M239 183Q300 83 380 77l-38 69 43 16-67 43 33 42-102 34z" fill="url(#dragon)" stroke="#76508e" stroke-width="5"/>
+  <path d="M153 198L58 146l24 59-33 42M247 198l95-52-24 59 33 42" fill="none" stroke="#9a65ae" stroke-width="4" opacity=".55"/>
+  <path d="M150 213L58 146M250 213l92-67" stroke="#171426" stroke-width="8"/>
+
+  <!-- Cauda -->
+  <path d="M205 325q102 22 118-35 12-43-24-47-28-3-26 21 3 17 24 9" fill="none" stroke="#29203f" stroke-width="24" stroke-linecap="round"/>
+  <path d="M297 273l23-22 3 31z" fill="#755087"/>
+
+  <!-- Corpo -->
+  <path d="M152 203l48-36 48 36 27 115-31 70h-88l-31-70z" fill="url(#dragon)" stroke="#171423" stroke-width="6"/>
+  <path d="M176 215l24 29 24-29 14 120-38 37-38-37z" fill="#493356"/>
+  <path d="M178 258h44M172 282h56M169 308h62M176 334h48" stroke="#9a699e" stroke-width="4" opacity=".45"/>
+
+  <!-- Cabeça -->
+  <path d="M143 104l34 19q23-13 46 0l34-19-8 49 22 37-37 49h-68l-37-49 22-37z" fill="url(#dragon)" stroke="#8b5b9e" stroke-width="4"/>
+  <path d="M153 115l-7-63 38 65M247 115l7-63-38 65" fill="#272038" stroke="#76508e" stroke-width="5"/>
+  <path d="M142 161l45 4-18 25-34-10zM258 161l-45 4 18 25 34-10z" fill="#11121e"/>
+  <path d="M151 166l27 4-17 10zM249 166l-27 4 17 10z" fill="#ef72ff" filter="url(#glow)"/>
+  <path d="M166 211l34-19 34 19-34 18z" fill="#171421"/>
+  <path d="M174 214l7 14 7-11M226 214l-7 14-7-11" fill="#ddd2e6"/>
+  <path d="M200 123v69" stroke="#80518f" stroke-width="4"/>
+
+  <!-- Garras -->
+  <path d="M146 293l-50 44 38-5-10 24 46-36M254 293l50 44-38-5 10 24-46-36" fill="#29203f" stroke="#725083" stroke-width="4"/>
+</svg>

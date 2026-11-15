@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Rainha Estelar</title>
+  <desc id="desc">Rainha cósmica com coroa, vestido estrelado e magia das estrelas.</desc>
+  <defs>
+    <radialGradient id="bg">
+      <stop stop-color="#443273"/>
+      <stop offset=".5" stop-color="#1b2048"/>
+      <stop offset="1" stop-color="#090d22"/>
+    </radialGradient>
+    <linearGradient id="dress" x2="1" y2="1">
+      <stop stop-color="#8d62c2"/>
+      <stop offset=".45" stop-color="#403a91"/>
+      <stop offset="1" stop-color="#172750"/>
+    </linearGradient>
+    <linearGradient id="hair" x2="0" y2="1">
+      <stop stop-color="#e2dcff"/>
+      <stop offset=".4" stop-color="#a28ed1"/>
+      <stop offset="1" stop-color="#554a8e"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <g fill="#e5e5ff">
+    <circle cx="47" cy="68" r="2"/><circle cx="102" cy="41" r="3"/>
+    <circle cx="303" cy="48" r="2"/><circle cx="353" cy="113" r="3"/>
+    <circle cx="58" cy="211" r="2"/><circle cx="333" cy="246" r="2"/>
+    <path d="M66 123l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/>
+    <path d="M327 164l4 11 11 4-11 4-4 11-4-11-11-4 11-4z"/>
+    <path d="M280 85l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/>
+  </g>
+  <ellipse cx="200" cy="188" rx="151" ry="68" fill="none" stroke="#b899ee" stroke-width="2" opacity=".25" transform="rotate(-18 200 188)"/>
+  <circle cx="56" cy="237" r="8" fill="#e4c8ff" filter="url(#glow)"/>
+
+  <!-- Cabelo -->
+  <path d="M119 136q-4-91 81-91 86 0 81 91l28 205-75 44-34-92-34 92-75-44z" fill="url(#hair)"/>
+  <path d="M128 139q-10 117 12 194M272 139q10 117-12 194M151 77q-30 107-8 190M249 77q30 107 8 190" fill="none" stroke="#e2d8ff" stroke-width="4" opacity=".28"/>
+
+  <!-- Vestido -->
+  <path d="M153 211l47 30 47-30 32 53 62 136H59l62-136z" fill="url(#dress)" stroke="#9c85d4" stroke-width="4"/>
+  <path d="M151 217l49 60 49-60-10 95-39 45-39-45z" fill="#222d68"/>
+  <path d="M200 277v115M139 276l-32 116M261 276l32 116" stroke="#c0a5ed" stroke-width="3" opacity=".4"/>
+  <path d="M200 292l7 15 17 2-12 12 3 17-15-8-15 8 3-17-12-12 17-2z" fill="#e8d8ff" filter="url(#glow)"/>
+  <g fill="#d7c6ff">
+    <circle cx="135" cy="339" r="3"/><circle cx="265" cy="352" r="3"/>
+    <circle cx="166" cy="370" r="2"/><circle cx="236" cy="383" r="2"/>
+  </g>
+
+  <!-- Rosto -->
+  <path d="M153 112q1-52 47-52 47 0 47 52v47q-7 54-47 66-40-12-47-66z" fill="#d7ad9e"/>
+  <path d="M148 124q-8-76 52-75 62 1 52 77l-24-42-28 24-28-24z" fill="url(#hair)"/>
+  <path d="M168 139l18-3M214 136l18 3" stroke="#493b69" stroke-width="4" stroke-linecap="round"/>
+  <path d="M172 146l12 1M216 147l12-1" stroke="#b9edff" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M188 181q12 8 24 0" fill="none" stroke="#9a5f76" stroke-width="3"/>
+  <path d="M200 153l-4 15h9" fill="none" stroke="#b6847d" stroke-width="2"/>
+
+  <!-- Coroa -->
+  <path d="M151 84l-10-55 37 28 22-47 22 47 37-28-10 55z" fill="#dbc278" stroke="#fff0ae" stroke-width="3"/>
+  <path d="M157 69h86l-4 22h-78z" fill="#a98445"/>
+  <path d="M200 28l7 13 15 2-11 11 3 15-14-7-14 7 3-15-11-11 15-2z" fill="#e9dcff" filter="url(#glow)"/>
+  <circle cx="151" cy="52" r="5" fill="#a8dfff"/>
+  <circle cx="249" cy="52" r="5" fill="#a8dfff"/>
+
+  <!-- Magia -->
+  <path d="M114 265q-51-37-24-73 17-23 39-4" fill="none" stroke="#cbb0ff" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M286 265q51-37 24-73-17-23-39-4" fill="none" stroke="#cbb0ff" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Espadachim Errante</title>
+  <desc id="desc">Guerreiro veloz com espada, capa e cachecol ao vento.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1">
+      <stop stop-color="#a34e46"/>
+      <stop offset=".5" stop-color="#4e3145"/>
+      <stop offset="1" stop-color="#171a29"/>
+    </linearGradient>
+    <linearGradient id="blade" x2="1" y2="1">
+      <stop stop-color="#ffffff"/>
+      <stop offset=".5" stop-color="#a8c1cf"/>
+      <stop offset="1" stop-color="#516778"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="290" cy="111" r="60" fill="#ffc08a" opacity=".55"/>
+  <path d="M0 265l85-74 51 42 80-94 95 100 45-40 44 44v157H0z" fill="#242335" opacity=".8"/>
+  <path d="M18 94h118M48 119h75M269 286h105M294 310h61" stroke="#ffd2ae" stroke-width="3" stroke-linecap="round" opacity=".35"/>
+
+  <!-- Capa -->
+  <path d="M140 177q-66 37-102 145l68-23-31 61 117-48 67-101z" fill="#662f3d" stroke="#aa5150" stroke-width="4"/>
+  <path d="M143 197L67 297M163 220l-70 96" stroke="#d47863" stroke-width="3" opacity=".3"/>
+
+  <!-- Corpo -->
+  <path d="M142 185l52-27 55 26 34 120-39 79H137l-25-79z" fill="#273443" stroke="#151d28" stroke-width="6"/>
+  <path d="M159 202l35 48 39-49 14 117-52 40-52-42z" fill="#405466"/>
+  <path d="M138 274h116M145 292h101" stroke="#b58755" stroke-width="9"/>
+  <circle cx="197" cy="283" r="12" fill="#d7b177"/>
+
+  <!-- Cabeça -->
+  <path d="M157 89q6-49 49-45 48 6 43 58l-16 66-40 17-40-34z" fill="#c58f70"/>
+  <path d="M151 107q-5-67 54-70 57 7 48 76l-23-37-14 23-18-30-15 29z" fill="#171b25"/>
+  <path d="M170 121l15-3M211 118l15 3" stroke="#25212a" stroke-width="5" stroke-linecap="round"/>
+  <path d="M186 150q14 7 27-2" fill="none" stroke="#744b47" stroke-width="3"/>
+
+  <!-- Cachecol ao vento -->
+  <path d="M150 162q44 30 91 2l16 28q-60 38-119 0z" fill="#b94e47"/>
+  <path d="M151 174Q82 143 32 168q65 0 91 41zM241 177q66-22 115 9-60-10-97 28z" fill="#d36152"/>
+
+  <!-- Braço e espada -->
+  <path d="M237 208q37 29 54 72" fill="none" stroke="#354654" stroke-width="30" stroke-linecap="round"/>
+  <path d="M286 274l19 16" stroke="#c58f70" stroke-width="17" stroke-linecap="round"/>
+  <path d="M285 287L101 55l-13-17-3 23 180 242z" fill="url(#blade)" stroke="#d6e5eb" stroke-width="3"/>
+  <path d="M91 54l179 237" stroke="#ffffff" stroke-width="3" opacity=".6"/>
+  <path d="M251 280l42-34" stroke="#d0a362" stroke-width="10" stroke-linecap="round"/>
+  <path d="M275 269l29 35" stroke="#69432e" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- Pernas -->
+  <path d="M153 349l-24 51h57l16-51M222 349l22 51h57l-45-65" fill="#202a35"/>
+</svg>

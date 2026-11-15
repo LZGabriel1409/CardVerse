@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Fênix Celestial</title>
+  <desc id="desc">Fênix lendária com asas de fogo dourado renascendo das cinzas.</desc>
+  <defs>
+    <radialGradient id="bg">
+      <stop stop-color="#8d3825"/>
+      <stop offset=".5" stop-color="#3e1e2b"/>
+      <stop offset="1" stop-color="#150f1d"/>
+    </radialGradient>
+    <linearGradient id="fire" x1="0" y1="1" x2="1" y2="0">
+      <stop stop-color="#e84426"/>
+      <stop offset=".48" stop-color="#ff9c32"/>
+      <stop offset="1" stop-color="#fff1a0"/>
+    </linearGradient>
+    <linearGradient id="gold" x2="0" y2="1">
+      <stop stop-color="#fff6bd"/>
+      <stop offset=".45" stop-color="#ffc54d"/>
+      <stop offset="1" stop-color="#e75a28"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="200" cy="188" r="137" fill="#ff8b36" opacity=".09"/>
+  <circle cx="200" cy="188" r="104" fill="#ffb43e" opacity=".08"/>
+  <g fill="#ffcf6a">
+    <circle cx="61" cy="89" r="3"/><circle cx="337" cy="77" r="3"/>
+    <circle cx="43" cy="213" r="2"/><circle cx="356" cy="230" r="2"/>
+    <path d="M93 48l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+    <path d="M314 153l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+  </g>
+
+  <!-- Asas -->
+  <path d="M183 191Q128 68 24 49l42 63-47-7 55 57-51 5 69 47-43 23 86 37 58-39z" fill="url(#fire)" stroke="#ffc65c" stroke-width="4" filter="url(#glow)"/>
+  <path d="M217 191Q272 68 376 49l-42 63 47-7-55 57 51 5-69 47 43 23-86 37-58-39z" fill="url(#fire)" stroke="#ffc65c" stroke-width="4" filter="url(#glow)"/>
+
+  <!-- Penas internas -->
+  <path d="M167 205L66 112l42 72-52-17 70 62-34 8 57 20M233 205l101-93-42 72 52-17-70 62 34 8-57 20" fill="none" stroke="#fff0a0" stroke-width="7" stroke-linecap="round" opacity=".7"/>
+  <path d="M151 192L77 91M249 192l74-101" stroke="#d94128" stroke-width="9" opacity=".6"/>
+
+  <!-- Cauda -->
+  <path d="M178 258q-73 58-42 128 4-54 55-72-35 45-8 86 8-57 31-80M222 258q73 58 42 128-4-54-55-72 35 45 8 86-8-57-31-80" fill="url(#fire)" stroke="#ffbc4b" stroke-width="4"/>
+  <path d="M196 273q-29 70 4 127 33-57 4-127" fill="url(#gold)"/>
+
+  <!-- Corpo -->
+  <path d="M171 161l29-28 29 28 19 77-20 65-28 25-28-25-20-65z" fill="url(#gold)" stroke="#ffe188" stroke-width="4"/>
+  <path d="M180 206l20 23 20-23 8 55-28 47-28-47z" fill="#f07a2e"/>
+  <path d="M179 225h42M176 246h48M182 269h36" stroke="#ffd570" stroke-width="4"/>
+
+  <!-- Cabeça -->
+  <path d="M169 115l31-27 31 27-6 55-25 25-25-25z" fill="url(#gold)" stroke="#ffe89b" stroke-width="4"/>
+  <path d="M183 91l-3-39 20 27 20-39-3 48" fill="url(#fire)" stroke="#ffca58" stroke-width="4"/>
+  <path d="M177 124l18 4-13 11zM223 124l-18 4 13 11z" fill="#3a1d24"/>
+  <circle cx="185" cy="129" r="3" fill="#fff8cf"/>
+  <circle cx="215" cy="129" r="3" fill="#fff8cf"/>
+  <path d="M188 151l12-8 12 8-12 24z" fill="#fff0a0"/>
+  <path d="M200 88V43" stroke="#fff0a0" stroke-width="4" opacity=".65"/>
+
+  <!-- Cinzas e brasas -->
+  <path d="M0 369q49-23 99 0t101 0 101 0 99 0v31H0z" fill="#291a22"/>
+  <g fill="#ff9a3c" filter="url(#glow)">
+    <circle cx="76" cy="354" r="4"/><circle cx="116" cy="377" r="3"/>
+    <circle cx="290" cy="358" r="4"/><circle cx="330" cy="380" r="3"/>
+  </g>
+</svg>

@@ -793,3 +793,118 @@ a:hover { color: var(--gold); }
     }
 }
 
+
+/* ==========================================
+   ADMINISTRAÇÃO | CARDVERSE
+========================================== */
+
+/* Estrutura geral */
+
+.admin-layout {
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    min-height: 100vh;
+    padding: 30px 20px;
+    background: #171520;
+    border-right: 1px solid var(--border);
+}
+
+/* Navegação lateral */
+
+.admin-sidebar .nav-link {
+    color: var(--muted);
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 9px;
+    transition: background .2s, color .2s;
+}
+
+.admin-sidebar .nav-link .bi {
+    margin-right: 9px;
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    color: var(--gold);
+    background: #30263f;
+}
+
+/* Conteúdo principal */
+
+.admin-content {
+    padding: clamp(22px, 4vw, 40px);
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 40px;
+}
+
+.admin-header h1 {
+    color: var(--text);
+    font-weight: 850;
+}
+
+/* Cards administrativos */
+
+.admin-feature {
+    text-decoration: none;
+    position: relative;
+}
+
+.admin-feature > .bi {
+    color: var(--gold);
+}
+
+.admin-feature h3 {
+    color: var(--text);
+    font-weight: 800;
+}
+
+.admin-feature p {
+    min-height: 48px;
+}
+
+.admin-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold);
+    font-size: .88rem;
+    font-weight: 750;
+}
+
+.admin-feature:hover .admin-card-link {
+    color: #fff;
+}
+
+/* Responsividade */
+
+@media (max-width: 767px) {
+
+    .admin-sidebar {
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .admin-sidebar .brand {
+        margin-bottom: 20px !important;
+    }
+
+    .admin-content {
+        padding: 25px 18px;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+    }
+
+}

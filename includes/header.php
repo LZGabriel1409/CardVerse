@@ -1,7 +1,14 @@
 
 <?php
 
-$saldo = (int)$usuario['moedas'];
+// ==========================================
+// DADOS DO USUÁRIO
+// ==========================================
+
+$saldo = (int) $usuario['moedas'];
+
+// Identifica se o usuário é administrador
+$ehAdmin = isset($usuario['tipo']) && $usuario['tipo'] === 'admin';
 
 // Identifica qual página está aberta
 $paginaAtual = basename($_SERVER['PHP_SELF']);
@@ -52,6 +59,19 @@ $paginaAtual = basename($_SERVER['PHP_SELF']);
                     <i class="bi bi-person me-1"></i>Perfil
                 </a>
 
+                <!-- ======================================
+                     ACESSO ADMINISTRATIVO
+                ======================================= -->
+
+                <?php if ($ehAdmin): ?>
+
+                    <a class="nav-link <?= str_contains($_SERVER['PHP_SELF'], '/admin/') ? 'active' : '' ?>"
+                       href="admin/index.php">
+                        <i class="bi bi-shield-lock me-1"></i>Administração
+                    </a>
+
+                <?php endif; ?>
+
             </div>
 
             <div class="ms-auto d-flex align-items-center gap-2">
@@ -61,7 +81,8 @@ $paginaAtual = basename($_SERVER['PHP_SELF']);
                 </span>
 
                 <form action="logout.php" method="post" class="mb-0">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(tokenCsrf()) ?>">
+                    <input type="hidden" name="csrf_token"
+                           value="<?= htmlspecialchars(tokenCsrf()) ?>">
 
                     <button class="btn btn-outline-game btn-sm px-3" type="submit">
                         <i class="bi bi-box-arrow-right me-1"></i>Sair

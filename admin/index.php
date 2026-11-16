@@ -81,10 +81,11 @@ $nomeAdmin = htmlspecialchars(
                     Voltar ao jogo
                 </a>
 
-                <a href="../actions/sair.php" class="nav-link">
-                    <i class="bi bi-box-arrow-right"></i>
-                    Sair
-                </a>
+                <form action="../logout.php" method="post">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(tokenCsrf(), ENT_QUOTES, 'UTF-8') ?>">
+                    <button type="submit" class="nav-link border-0 bg-transparent text-start w-100"><i class="bi bi-box-arrow-right"></i>
+                    Sair</button>
+                </form>
 
             </nav>
 

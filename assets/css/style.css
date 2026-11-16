@@ -1044,3 +1044,11 @@ a:hover { color: var(--gold); }
     outline: 2px solid var(--purple);
     outline-offset: 3px;
 }
+
+/* Raridades especiais: separadas visualmente das lendárias. */
+.rarity-secreta { color: #d9b7ff; background: #302044; border-color: #9b5ee0; }
+.rarity-exclusiva { color: #a6f4ed; background: #173e42; border-color: #37bfb4; }
+.reveal-card__front.rarity-secreta { border-color: #9b5ee0; box-shadow: 0 0 22px #9b5ee055; }
+.reveal-card__front.rarity-exclusiva { border-color: #37bfb4; box-shadow: 0 0 22px #37bfb455; }
+.mini-card.rarity-secreta { color: #d9b7ff; border-color: #9b5ee0; background: #302044; }
+.mini-card.rarity-exclusiva { color: #a6f4ed; border-color: #37bfb4; background: #173e42; }

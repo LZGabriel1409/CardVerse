@@ -180,10 +180,10 @@ include __DIR__ . '/includes/header.php';
                     $raridade = isset(Carta::RARIDADES[$carta['raridade']])
                         ? $carta['raridade']
                         : 'comum';
-                    $dadosRaridade = Carta::RARIDADES[$raridade];
+                    $dadosRaridade = Carta::dadosExibicao($carta);
                     $imagem = imagemCartaAbertura((string)($carta['imagem'] ?? ''));
                     ?>
-                    <div class="reveal-card" data-rarity="<?= htmlspecialchars($raridade) ?>"
+                    <div class="reveal-card" data-rarity="<?= htmlspecialchars(($carta['tipo_especial'] ?? 'normal') !== 'normal' ? $carta['tipo_especial'] : $raridade) ?>"
                          style="--reveal-delay: <?= (int)$indice ?>;">
                         <div class="reveal-card__inner">
                             <div class="reveal-card__face reveal-card__back" aria-hidden="true">
@@ -439,13 +439,14 @@ include __DIR__ . '/includes/header.php';
                             <div class="history-cards" aria-hidden="true">
                                 <?php foreach ($aberturaRecente['cartas'] as $cartaRecente): ?>
                                     <?php
+                                    $dadosRecente = Carta::dadosExibicao($cartaRecente);
                                     $raridadeRecente = isset(Carta::RARIDADES[$cartaRecente['raridade']])
                                         ? $cartaRecente['raridade']
                                         : 'comum';
                                     ?>
-                                    <span class="mini-card <?= htmlspecialchars(Carta::RARIDADES[$raridadeRecente]['classe']) ?>"
+                                    <span class="mini-card <?= htmlspecialchars($dadosRecente['classe']) ?>"
                                           title="<?= htmlspecialchars((string)$cartaRecente['nome']) ?>">
-                                        <i class="bi <?= htmlspecialchars(Carta::RARIDADES[$raridadeRecente]['icone']) ?>"></i>
+                                        <i class="bi <?= htmlspecialchars($dadosRecente['icone']) ?>"></i>
                                     </span>
                                 <?php endforeach; ?>
                             </div>

@@ -183,3 +183,36 @@ O CardVerse é desenvolvido de forma incremental: cada etapa adiciona funcionali
 ---
 
 **CardVerse** — *Sua próxima carta lendária pode estar a um pacote de distância.*
+
+
+## Atualização — perfil, trocas e administração (15/11/2026)
+
+- Perfil: seleção de avatares encontrados automaticamente em `assets/img/avatares/`; `default.png` continua sendo o padrão. Novos arquivos PNG/JPG/JPEG/WebP aparecem na seleção sem mudar o PHP.
+- Trocas: propostas, listagem, aceitação, recusa e cancelamento. A aceitação transfere uma unidade de cada carta numa transação SQL; só o destinatário aceita/recusa e só o remetente cancela.
+- Menu: acesso a Trocas e botão de painel para contas `tipo='admin'`. Corrigidos links administrativos que apontavam para `actions/sair.php` inexistente.
+- Perfil: corrigidos filtro de raridade, cálculo de XP e divisão por zero com catálogo vazio.
+- Banco: a tabela `trocas` e a coluna `usuarios.avatar` **já existem** no `database/cardverse.sql`. Para instalações criadas com esse SQL, nenhuma migração é necessária. Em instalações antigas, verifique se essas estruturas existem antes de usar os novos recursos.
+- Para conceder admin a uma conta existente, execute no phpMyAdmin (substituindo o e-mail): `UPDATE usuarios SET tipo='admin' WHERE email='seu-email@exemplo.com';`. Nunca disponibilize essa operação ao jogador comum.
+- Testes recomendados: criar duas contas, abrir pacotes para obter cartas, propor e aceitar uma troca, conferir quantidades, testar recusa/cancelamento e editar carta/pacote com admin.
+- Observação: validação sintática PHP foi realizada, mas o ambiente de execução XAMPP/MySQL não está disponível aqui para testes completos de integração.
+
+
+## Cartas secretas e exclusivas (2026-11-16)
+- 3 secretas: Godly Sahur, Evil Sahur, Israel Sahur. Cada abertura de pacote tem 0,10% de chance TOTAL de obter uma secreta, escolhida com chances iguais; ela substitui uma carta normal.
+- 2 recompensas: True Sahur e La Creatura. Ao descobrir as 3 secretas pela primeira vez, o usuário ganha uma delas (50% cada), uma única vez. Descobertas por trocas também contam.
+- Trocas especiais: apenas especial por especial; trocas normais continuam normal por normal. O servidor valida na proposta e aceitação.
+- O catálogo público exclui especiais. A coleção pessoal mostra as cartas que o usuário possui; o endpoint de trocas mostra apenas as cartas do destinatário e exige que o solicitante possua uma especial para consultar especiais.
+- As imagens foram colocadas em `assets/img/cartas/`. Associação provisória: anjo=Godly, demônio=Evil, estrela=Israel, primeira foto=True, última foto=La Creatura.
+- **Banco já existente:** faça backup e execute `database/migracao_cartas_secretas.sql` UMA vez no phpMyAdmin, selecionando o banco `cardverse`. NÃO reimporte o banco completo.
+- **Instalação nova:** importe `database/cardverse.sql` e depois execute a migração completa uma única vez.
+- Teste recomendado: abrir pacotes, validar descoberta/recompensa e troca especial com duas contas. Sem MySQL local, os fluxos não foram validados em execução.
+
+
+## Banco de dados unificado
+
+Para instalações novas, importe apenas `database/cardverse.sql`, que já inclui as cartas secretas, as exclusivas e as tabelas de descoberta e recompensa.
+
+**Banco já existente:** importar `cardverse.sql` novamente não adiciona colunas às tabelas existentes (`CREATE TABLE IF NOT EXISTS` não altera tabelas). Faça backup e execute as alterações estruturais apropriadas antes de utilizar o sistema atualizado; não exclua o banco atual para atualizar.
+
+### Identificação visual de cartas especiais
+As cartas com `tipo_especial = secreta` aparecem como **Secreta** (roxo) e as com `tipo_especial = exclusiva` aparecem como **Exclusiva** (turquesa), tanto na coleção quanto na revelação de pacotes. A coluna `raridade` continua com o valor interno `lendaria` para preservar a compatibilidade do sorteio e do banco existente; a apresentação sempre prioriza `tipo_especial`. **Não é necessário executar SQL ou recriar o banco para esta correção visual.**

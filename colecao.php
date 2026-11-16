@@ -179,7 +179,7 @@ include __DIR__ . '/includes/header.php';
                 <?php foreach ($cartas as $carta): ?>
                     <?php
                     $quantidade = (int)$carta['quantidade'];
-                    $dadosRaridade = $raridades[$carta['raridade']] ?? $raridades['comum'];
+                    $dadosRaridade = Carta::dadosExibicao($carta);
                     $imagem = imagemCarta($carta['imagem']);
                     $descricao = trim((string)$carta['descricao']);
                     ?>
@@ -223,7 +223,7 @@ include __DIR__ . '/includes/header.php';
         <?php foreach ($cartas as $carta): ?>
             <?php
             $quantidade = (int)$carta['quantidade'];
-            $dadosRaridade = $raridades[$carta['raridade']] ?? $raridades['comum'];
+            $dadosRaridade = Carta::dadosExibicao($carta);
             $imagem = imagemCarta($carta['imagem']);
             $descricao = trim((string)$carta['descricao']);
             ?>

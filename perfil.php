@@ -18,9 +18,14 @@ $usuarioId = (int)$_SESSION['usuario_id'];
 exigirSessaoValida($usuario);
 
 // Foto de perfil: usa a padrão caso o usuário ainda não tenha uma.
-$avatar = !empty($usuario['avatar'])
-    ? $usuario['avatar']
-    : 'assets/img/avatares/default.png';
+$avatarPadrao = 'assets/img/avatares/default.png';
+$avatar = !empty($usuario['avatar']) && str_starts_with($usuario['avatar'], 'assets/img/avatares/')
+    && is_file(__DIR__ . '/' . $usuario['avatar']) ? $usuario['avatar'] : $avatarPadrao;
+$avataresDisponiveis = [];
+foreach (glob(__DIR__ . '/assets/img/avatares/*.{png,jpg,jpeg,webp}', GLOB_BRACE) ?: [] as $arquivoAvatar) {
+    $avataresDisponiveis[] = basename($arquivoAvatar);
+}
+sort($avataresDisponiveis);
 
 
 //
@@ -54,8 +59,9 @@ $avatar = !empty($usuario['avatar'])
     }
 
     $nivel = (int) $nivelAtual['nivel'];
-    $proxNivel = (int)$proximoNivel["experiencia_necessaria"] ?? $nivelAtual['experiencia_necessaria'];
-    $progressoXP =(int) (($xp - $nivelAtual["experiencia_necessaria"]) / ($proxNivel - $nivelAtual["experiencia_necessaria"]) * 100);
+    $proxNivel = (int)($proximoNivel['experiencia_necessaria'] ?? $nivelAtual['experiencia_necessaria']);
+    $intervaloXP = $proxNivel - (int)$nivelAtual['experiencia_necessaria'];
+    $progressoXP = $intervaloXP > 0 ? max(0, min(100, (int)(($xp - (int)$nivelAtual['experiencia_necessaria']) / $intervaloXP * 100))) : 100;
 
 
     //
@@ -63,7 +69,7 @@ $avatar = !empty($usuario['avatar'])
     //
 
     $raridade = (string)($_GET['raridade'] ?? '');
-    if (!isset($raridades[$raridade])) {
+    if (!isset(Carta::RARIDADES[$raridade])) {
         $raridade = '';
     }
 
@@ -101,7 +107,7 @@ $avatar = !empty($usuario['avatar'])
     // progressão da cole~çao
     //
 
-    $progressoColecao =(int) (($qtdCartas / $cartasExistentes) * 100);
+    $progressoColecao = $cartasExistentes > 0 ? (int)(($qtdCartas / $cartasExistentes) * 100) : 0;
     $cartasRestantes =(int) ($cartasExistentes - $qtdCartas);
 
 
@@ -165,6 +171,20 @@ $avatar = !empty($usuario['avatar'])
                 </div>
 
                 <h1><?= htmlspecialchars($usuario['nome']) ?></h1>
+
+                <details class="mt-3 mb-3"><summary class="btn btn-outline-light btn-sm">Alterar avatar</summary>
+                    <form method="post" action="actions/alterar-avatar.php" class="mt-3">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(tokenCsrf(), ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="d-flex flex-wrap gap-3 mb-3">
+                        <?php foreach ($avataresDisponiveis as $nomeAvatar): ?>
+                            <label class="text-center" style="cursor:pointer">
+                                <img src="assets/img/avatares/<?= rawurlencode($nomeAvatar) ?>" alt="Avatar <?= htmlspecialchars($nomeAvatar, ENT_QUOTES, 'UTF-8') ?>" width="80" height="80" style="object-fit:cover;border-radius:50%">
+                                <div><input type="radio" name="avatar" value="<?= htmlspecialchars($nomeAvatar, ENT_QUOTES, 'UTF-8') ?>" <?= basename($avatar)===$nomeAvatar?'checked':'' ?> required> <?= htmlspecialchars(pathinfo($nomeAvatar, PATHINFO_FILENAME), ENT_QUOTES, 'UTF-8') ?></div>
+                            </label>
+                        <?php endforeach; ?>
+                        </div><button class="btn btn-warning btn-sm" type="submit">Salvar avatar</button>
+                    </form>
+                </details>
 
                 <span class="profile-title">
                     <i class="bi bi-lightning-charge-fill me-1"></i>

@@ -21,7 +21,22 @@ CREATE TABLE IF NOT EXISTS cartas (
  imagem VARCHAR(255) NOT NULL,
  raridade ENUM('comum','rara','epica','lendaria') NOT NULL,
  ataque INT UNSIGNED NOT NULL DEFAULT 0,
- defesa INT UNSIGNED NOT NULL DEFAULT 0
+ defesa INT UNSIGNED NOT NULL DEFAULT 0,
+ tipo_especial ENUM('normal','secreta','exclusiva') NOT NULL DEFAULT 'normal'
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS descobertas_secretas (
+ usuario_id INT UNSIGNED NOT NULL, carta_id INT UNSIGNED NOT NULL,
+ descoberta_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(usuario_id,carta_id),
+ FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+ FOREIGN KEY(carta_id) REFERENCES cartas(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS recompensas_secretas (
+ usuario_id INT UNSIGNED PRIMARY KEY, carta_id INT UNSIGNED NOT NULL,
+ recebida_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+ FOREIGN KEY(carta_id) REFERENCES cartas(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS colecao (
@@ -288,7 +303,7 @@ ON DUPLICATE KEY UPDATE peso=VALUES(peso);
 
 
 -- niveis
-INSERT INTO niveis (nivel, experiencia_necessaria)
+INSERT IGNORE INTO niveis (nivel, experiencia_necessaria)
 VALUES
 (1, 0),
 (2, 100),
@@ -396,7 +411,7 @@ VALUES
     100000
 );
 
---Missoes
+-- Missoes
 
 
 -- =========================================
@@ -660,3 +675,13 @@ VALUES
 UPDATE cartas
 SET imagem = REPLACE(imagem, '.png', '.svg')
 WHERE imagem LIKE '%.png';
+
+-- Cartas especiais: cadastradas após os ajustes das imagens normais.
+INSERT INTO cartas(nome,descricao,imagem,raridade,ataque,defesa,tipo_especial) VALUES
+('Godly Sahur','Carta secreta','godly-sahur.png','lendaria',999,999,'secreta'),
+('Evil Sahur','Carta secreta','evil-sahur.png','lendaria',999,999,'secreta'),
+('Israel Sahur','Carta secreta','israel-sahur.png','lendaria',999,999,'secreta'),
+('True Sahur','Recompensa exclusiva','true-sahur.png','lendaria',1000,1000,'exclusiva'),
+('La Creatura','Recompensa exclusiva','la-creatura.png','lendaria',1000,1000,'exclusiva')
+ON DUPLICATE KEY UPDATE tipo_especial=VALUES(tipo_especial), imagem=VALUES(imagem);
+

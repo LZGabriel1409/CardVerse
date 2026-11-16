@@ -356,7 +356,7 @@ class Abertura
                 'SELECT ca.id, ca.nome, ca.descricao, ca.imagem, ca.raridade, ca.ataque, ca.defesa
                  FROM pacote_cartas pc
                  INNER JOIN cartas ca ON ca.id = pc.carta_id
-                 WHERE pc.pacote_id = ?'
+                 WHERE pc.pacote_id = ? AND ca.tipo_especial = \'normal\''
             );
             $stmt->execute([(int)$compra['pacote_id']]);
             $pool = $stmt->fetchAll();
@@ -372,6 +372,13 @@ class Abertura
                     'Este pacote não possui cartas disponíveis para sorteio.',
                     AberturaException::SEM_CARTAS
                 );
+            }
+
+            // Um único sorteio de 0,10% por pacote; substitui um slot normal.
+            $especial = new Especial($this->pdo);
+            $secreta = $especial->sorteada();
+            if ($secreta !== null) {
+                $cartas[random_int(0, count($cartas) - 1)] = $secreta;
             }
 
             $stmt = $this->pdo->prepare(
@@ -394,6 +401,7 @@ class Abertura
 
             foreach ($cartas as $carta) {
                 $stmt->execute([$usuarioId, (int)$carta['id']]);
+                $especial->descobrir($usuarioId, (int)$carta['id']);
             }
 
             $this->pdo->commit();

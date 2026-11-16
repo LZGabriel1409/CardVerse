@@ -27,6 +27,18 @@ class Carta
         ],
     ];
 
+    public static function dadosExibicao(array $carta): array
+    {
+        $tipo = (string)($carta['tipo_especial'] ?? 'normal');
+        if ($tipo === 'secreta') {
+            return ['rotulo' => 'Secreta', 'classe' => 'rarity-secreta', 'icone' => 'bi-incognito'];
+        }
+        if ($tipo === 'exclusiva') {
+            return ['rotulo' => 'Exclusiva', 'classe' => 'rarity-exclusiva', 'icone' => 'bi-award-fill'];
+        }
+        return self::RARIDADES[$carta['raridade'] ?? 'comum'] ?? self::RARIDADES['comum'];
+    }
+
     public function __construct(private PDO $pdo)
     {
     }
@@ -36,6 +48,7 @@ class Carta
         return $this->pdo->query(
             'SELECT id, nome, descricao, imagem, raridade, ataque, defesa
              FROM cartas
+             WHERE tipo_especial = \'normal\'
              ORDER BY nome'
         )->fetchAll();
     }
@@ -83,7 +96,7 @@ class Carta
         }
 
         $sql = 'SELECT ca.id, ca.nome, ca.descricao, ca.imagem, ca.raridade,
-                       ca.ataque, ca.defesa, SUM(co.quantidade) AS quantidade
+                       ca.ataque, ca.defesa, ca.tipo_especial, SUM(co.quantidade) AS quantidade
                 FROM colecao co
                 INNER JOIN cartas ca ON ca.id = co.carta_id
                 WHERE ' . implode(' AND ', $condicoes) . '

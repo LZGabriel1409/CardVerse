@@ -908,3 +908,139 @@ a:hover { color: var(--gold); }
     }
 
 }
+
+.admin-form-card {
+    padding: clamp(20px, 4vw, 35px);
+}
+
+.admin-form-card .form-label {
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+
+.admin-input {
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 9px;
+    padding: 12px 14px;
+}
+
+.admin-input:focus {
+    background-color: var(--surface-raised);
+    color: var(--text);
+    border-color: var(--purple);
+    box-shadow: 0 0 0 .2rem rgba(130, 80, 190, .15);
+}
+
+.admin-input::placeholder {
+    color: var(--muted);
+}
+
+.admin-input option {
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.admin-image-upload {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.admin-image-preview {
+    width: 100%;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.admin-image-preview img {
+    max-width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+}
+
+.admin-image-preview #placeholderImagem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.admin-image-preview #placeholderImagem i {
+    font-size: 3rem;
+    color: var(--purple);
+}
+
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+}
+
+
+/* ==========================================
+   SELEÇÃO DE CARTAS DOS PACOTES
+========================================== */
+
+.package-card-option {
+    display: block;
+    cursor: pointer;
+}
+
+.package-card-option > input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.package-card-option-content {
+    height: 100%;
+    padding: 18px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color .2s, background .2s;
+}
+
+.package-card-option-content strong {
+    color: var(--text);
+}
+
+.package-card-check {
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity .2s, color .2s;
+}
+
+.package-card-option:hover .package-card-option-content {
+    border-color: var(--purple);
+}
+
+.package-card-option > input:checked + .package-card-option-content {
+    border-color: var(--gold);
+    background: rgba(130, 80, 190, .12);
+}
+
+.package-card-option > input:checked + .package-card-option-content .package-card-check {
+    color: var(--gold);
+    opacity: 1;
+}
+
+.package-card-option > input:focus-visible + .package-card-option-content {
+    outline: 2px solid var(--purple);
+    outline-offset: 3px;
+}

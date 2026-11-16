@@ -7,7 +7,7 @@
 require_once __DIR__ . '/../config/auth.php';
 require_once __DIR__ . '/../config/conexao.php';
 
-// Impede o acesso de usuários que não são administradores
+// Impede o acesso de usuários que não são administradores.
 exigirAdmin($pdo, '../login.php');
 
 // ==========================================
@@ -233,8 +233,13 @@ function escapar($valor): string {
 
                                         <td><?= (int) $carta['defesa'] ?></td>
 
+                                        <!-- ==================================
+                                             AÇÕES: EDITAR E EXCLUIR
+                                        =================================== -->
+
                                         <td class="text-end">
 
+                                            <!-- Botão de edição -->
                                             <a
                                                 href="carta-form.php?id=<?= (int) $carta['id'] ?>"
                                                 class="btn btn-sm btn-outline-game"
@@ -242,6 +247,39 @@ function escapar($valor): string {
                                             >
                                                 <i class="bi bi-pencil"></i>
                                             </a>
+
+                                            <!-- Formulário de exclusão -->
+                                            <form
+                                                action="actions/excluir-carta.php"
+                                                method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('Tem certeza que deseja excluir esta carta?');"
+                                            >
+
+                                                <!-- Proteção CSRF -->
+                                                <input
+                                                    type="hidden"
+                                                    name="csrf_token"
+                                                    value="<?= escapar(tokenCsrf()) ?>"
+                                                >
+
+                                                <!-- ID da carta -->
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    value="<?= (int) $carta['id'] ?>"
+                                                >
+
+                                                <!-- Botão de exclusão -->
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Excluir carta"
+                                                >
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+
+                                            </form>
 
                                         </td>
                                     </tr>

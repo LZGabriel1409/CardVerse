@@ -1,14 +1,7 @@
 
 <?php
 
-// ==========================================
-// DADOS DO USUÁRIO
-// ==========================================
-
-$saldo = (int) $usuario['moedas'];
-
-// Identifica se o usuário é administrador
-$ehAdmin = isset($usuario['tipo']) && $usuario['tipo'] === 'admin';
+$saldo = (int)$usuario['moedas'];
 
 // Identifica qual página está aberta
 $paginaAtual = basename($_SERVER['PHP_SELF']);
@@ -53,36 +46,27 @@ $paginaAtual = basename($_SERVER['PHP_SELF']);
                     <i class="bi bi-envelope-open me-1"></i>Abrir pacotes
                 </a>
 
+                <a class="nav-link <?= $paginaAtual === 'trocas.php' ? 'active' : '' ?>" href="trocas.php"><i class="bi bi-arrow-left-right me-1"></i>Trocas</a>
+
                 <a class="nav-link <?= $paginaAtual === 'perfil.php' ? 'active' : '' ?>"
                    href="perfil.php"
                    <?= $paginaAtual === 'perfil.php' ? 'aria-current="page"' : '' ?>>
                     <i class="bi bi-person me-1"></i>Perfil
                 </a>
 
-                <!-- ======================================
-                     ACESSO ADMINISTRATIVO
-                ======================================= -->
-
-                <?php if ($ehAdmin): ?>
-
-                    <a class="nav-link <?= str_contains($_SERVER['PHP_SELF'], '/admin/') ? 'active' : '' ?>"
-                       href="admin/index.php">
-                        <i class="bi bi-shield-lock me-1"></i>Administração
-                    </a>
-
-                <?php endif; ?>
-
             </div>
 
             <div class="ms-auto d-flex align-items-center gap-2">
+                <?php if (isset($pdo) && usuarioAdmin($pdo)): ?>
+                    <a class="btn btn-outline-warning btn-sm" href="admin/index.php">Painel admin</a>
+                <?php endif; ?>
 
                 <span class="tag d-none d-sm-inline-block">
                     <i class="bi bi-coin me-1"></i><?= number_format($saldo, 0, ',', '.') ?>
                 </span>
 
                 <form action="logout.php" method="post" class="mb-0">
-                    <input type="hidden" name="csrf_token"
-                           value="<?= htmlspecialchars(tokenCsrf()) ?>">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(tokenCsrf()) ?>">
 
                     <button class="btn btn-outline-game btn-sm px-3" type="submit">
                         <i class="bi bi-box-arrow-right me-1"></i>Sair

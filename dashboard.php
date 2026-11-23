@@ -120,10 +120,10 @@ include __DIR__ . '/includes/header.php';
                 </a>
             </div>
             <div class="col-md-6 col-xl-3">
-                <div class="feature-card is-locked">
+                <div class="feature-card" href="trocas.php">
                     <i class="bi bi-arrow-left-right"></i>
                     <h3 class="h5 mt-3">Trocas</h3>
-                    <p class="muted mb-0">Negocie cartas com outros jogadores. Em breve!</p>
+                    <p class="muted mb-0">Negocie cartas com outros jogadores.</p>
                 </div>
             </div>
             <div class="col-md-6 col-xl-3">
